@@ -1,0 +1,342 @@
+---
+import Icon from './Icon.astro';
+import { business } from '../data/site';
+import { href, telHref, hoursSummary } from '../data/helpers';
+
+// On the home page use bare fragments so smooth-scroll handles them in place.
+const onHome = Astro.url.pathname === href('/');
+const to = (path: string) => (onHome ? path.slice(1) : href(path));
+
+const nav = [
+  { label: 'Treatments', to: '/#treatments' },
+  { label: 'Results', to: '/#results' },
+  { label: 'Your visit', to: '/#visit' },
+  { label: 'About', to: '/#about' },
+  { label: 'FAQ', to: '/#faq' },
+];
+---
+
+<header class="hdr" data-header>
+  <div class="wrap hdr__in">
+    <a class="logo" href={href('/')} aria-label={`${business.name}, home`}>
+      <span class="logo__word">Reveal</span>
+      <span class="logo__sub">A Youthful You</span>
+    </a>
+
+    <nav class="hdr__nav" aria-label="Primary">
+      <ul role="list">
+        {nav.map((n) => <li><a href={to(n.to)}>{n.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="hdr__cta">
+      <p class="hdr__status mono" data-hours-status aria-live="polite">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span data-hours-text>{hoursSummary()}</span>
+      </p>
+      <a class="btn hdr__call" href={telHref} data-magnetic>
+        <Icon name="phone" />
+        <span class="hdr__num">{business.phone}</span>
+      </a>
+      <button class="hdr__menu" type="button" aria-haspopup="dialog" aria-controls="menu" aria-expanded="false" data-menu-open>
+        <Icon name="menu" />
+        <span class="sr-only">Open menu</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<dialog class="menu" id="menu" aria-label="Menu" data-menu>
+  <div class="menu__top wrap">
+    <span class="logo" aria-hidden="true">
+      <span class="logo__word">Reveal</span>
+      <span class="logo__sub">A Youthful You</span>
+    </span>
+    <button class="hdr__menu" type="button" data-menu-close>
+      <Icon name="close" />
+      <span class="sr-only">Close menu</span>
+    </button>
+  </div>
+  <nav class="menu__nav wrap" aria-label="Mobile">
+    <ol role="list">
+      {
+        nav.map((n, i) => (
+          <li style={`--i:${i}`}>
+            <a href={to(n.to)} data-menu-link>
+              <span class="mono">0{i + 1}</span>
+              {n.label}
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </nav>
+  <div class="menu__foot wrap">
+    <p class="mono muted" data-hours-status>
+      <span class="status-dot" aria-hidden="true"></span>
+      <span data-hours-text>{hoursSummary()}</span>
+    </p>
+    <a class="btn btn--lg" href={telHref}><Icon name="phone" /> Call {business.phone}</a>
+  </div>
+</dialog>
+
+<style>
+  .hdr {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    height: var(--header-h);
+    transition:
+      transform var(--dur-2) var(--ease-out),
+      background-color var(--dur-2) var(--ease-out),
+      box-shadow var(--dur-2) var(--ease-out);
+  }
+
+  .hdr[data-scrolled] {
+    background: rgb(14 13 11 / 0.82);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    backdrop-filter: blur(14px) saturate(1.2);
+    box-shadow: 0 1px 0 var(--line);
+  }
+
+  .hdr[data-hidden] {
+    transform: translateY(-100%);
+  }
+
+  .hdr__in {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: var(--s-6);
+  }
+
+  .logo {
+    display: inline-flex;
+    flex-direction: column;
+    line-height: 1;
+    gap: 3px;
+  }
+
+  .logo__word {
+    font-family: var(--serif);
+    font-size: 1.65rem;
+    letter-spacing: -0.01em;
+  }
+
+  .logo__sub {
+    font-family: var(--mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--taupe);
+  }
+
+  .hdr__nav {
+    margin-inline: auto;
+  }
+
+  .hdr__nav ul {
+    display: flex;
+    gap: var(--s-6);
+    font-size: var(--t-sm);
+    color: var(--bone-2);
+  }
+
+  .hdr__nav a {
+    position: relative;
+    padding-block: var(--s-2);
+    transition: color var(--dur-1) var(--ease-out);
+  }
+
+  .hdr__nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 2px;
+    height: 1px;
+    background: var(--brass);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--dur-2) var(--ease-out);
+  }
+
+  .hdr__nav a:hover {
+    color: var(--bone);
+  }
+
+  .hdr__nav a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .hdr__cta {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+  }
+
+  .hdr__status {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-size: var(--t-xs);
+    color: var(--bone-2);
+    white-space: nowrap;
+  }
+
+  .hdr__call {
+    min-height: 2.75rem;
+  }
+
+  .hdr__menu {
+    display: none;
+  }
+
+  .hdr__menu {
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+  }
+
+  .hdr__menu :global(svg) {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  @media (max-width: 71.99rem) {
+    .hdr__status {
+      display: none;
+    }
+  }
+
+  @media (max-width: 59.99rem) {
+    .hdr__nav {
+      display: none;
+    }
+
+    .hdr__cta {
+      margin-left: auto;
+    }
+
+    .hdr__menu {
+      display: grid;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    /* The bottom action bar carries Call on phones. */
+    .hdr__call {
+      display: none;
+    }
+  }
+
+  /* ── Mobile menu ── */
+  .menu {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    padding: 0;
+    border: 0;
+    background: var(--ink);
+    color: var(--bone);
+    display: none;
+    flex-direction: column;
+    opacity: 0;
+    transition:
+      opacity var(--dur-2) var(--ease-out),
+      overlay var(--dur-2) allow-discrete,
+      display var(--dur-2) allow-discrete;
+  }
+
+  .menu[open] {
+    display: flex;
+    opacity: 1;
+  }
+
+  @starting-style {
+    .menu[open] {
+      opacity: 0;
+    }
+  }
+
+  .menu::backdrop {
+    background: transparent;
+  }
+
+  .menu__top {
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .menu__top .hdr__menu {
+    display: grid;
+  }
+
+  .menu__nav {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .menu__nav ol {
+    width: 100%;
+  }
+
+  .menu__nav li {
+    border-top: 1px solid var(--line);
+    transform: translateY(1rem);
+    opacity: 0;
+    transition:
+      transform var(--dur-3) var(--ease-out),
+      opacity var(--dur-3) var(--ease-out);
+    transition-delay: calc(var(--i) * 50ms + 80ms);
+  }
+
+  .menu[open] .menu__nav li {
+    transform: none;
+    opacity: 1;
+  }
+
+  @starting-style {
+    .menu[open] .menu__nav li {
+      transform: translateY(1rem);
+      opacity: 0;
+    }
+  }
+
+  .menu__nav a {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-4);
+    padding-block: var(--s-4);
+    font-family: var(--serif);
+    font-size: clamp(2.25rem, 9vw, 3.5rem);
+    line-height: 1;
+  }
+
+  .menu__nav .mono {
+    color: var(--taupe);
+    font-size: var(--t-xs);
+  }
+
+  .menu__foot {
+    display: grid;
+    gap: var(--s-4);
+    padding-bottom: max(var(--s-6), env(safe-area-inset-bottom));
+  }
+
+  .menu__foot p {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-size: var(--t-xs);
+  }
+</style>

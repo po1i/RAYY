@@ -1,0 +1,257 @@
+---
+import Icon from './Icon.astro';
+import Art from './Art.astro';
+import { business } from '../data/site';
+import { telHref, hoursSummary } from '../data/helpers';
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap hero__grid">
+    <div class="hero__copy">
+      <p class="eyebrow hero__eyebrow">Medical aesthetics · Roslindale, Boston</p>
+
+      <h1 id="hero-title" class="display hero__title lines" data-reveal>
+        <span class="line"><span>Look like</span></span>
+        <span class="line"><span>yourself,</span></span>
+        <span class="line"><span><em>rested.</em></span></span>
+      </h1>
+
+      <p class="lede hero__lede" data-reveal style="--i:3">
+        Botox, fillers, skin and wellness treatments led by a nurse practitioner with 20 years in medicine. Natural
+        results, prices up front, and a free consult before anything happens.
+      </p>
+
+      <div class="hero__actions" data-reveal style="--i:4">
+        <a class="btn btn--lg" href={telHref} data-magnetic>
+          <Icon name="phone" />
+          <span>Book a free consult</span>
+          <span class="hero__num mono">{business.phone}</span>
+        </a>
+        <a class="btn btn--lg btn--ghost" href="#treatments">
+          Find your treatment <Icon name="arrow-down" class="arrow" />
+        </a>
+      </div>
+
+      <p class="hero__status mono" data-hours-status data-reveal style="--i:5">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span data-hours-text>{hoursSummary()}</span>
+      </p>
+    </div>
+
+    <div class="hero__media">
+      <Art variant="warm" ratio="4 / 5" class="hero__art" eager sizes="(min-width: 60rem) 40vw, 100vw" />
+      <p class="hero__cap mono" aria-hidden="true"><span>Fig. 01</span><span>No filters. No frozen faces.</span></p>
+    </div>
+  </div>
+
+  <ul class="wrap hero__trust" role="list" data-reveal style="--i:6">
+    <li>
+      <span class="stars" aria-hidden="true">
+        <Icon name="star" /><Icon name="star" /><Icon name="star" /><Icon name="star" /><Icon name="star" />
+      </span>
+      <span><strong>{business.rating}</strong> from {business.reviewCount} client reviews</span>
+    </li>
+    <li><span><strong>Nurse practitioner</strong> led, ICU-trained</span></li>
+    <li><span><strong>CareCredit</strong> financing accepted</span></li>
+  </ul>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding-top: calc(var(--header-h) + var(--s-6));
+    overflow: clip;
+  }
+
+  .hero__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--s-6);
+    align-items: center;
+  }
+
+  .hero__copy {
+    grid-column: 1 / span 7;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero__title {
+    font-size: var(--t-3xl);
+    margin-block: var(--s-5) var(--s-6);
+    letter-spacing: -0.025em;
+  }
+
+  .hero__lede {
+    max-width: 40ch;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    margin-top: var(--s-6);
+  }
+
+  .hero__num {
+    padding-left: var(--s-3);
+    margin-left: var(--s-1);
+    border-left: 1px solid rgb(23 18 10 / 0.25);
+    font-size: var(--t-xs);
+    opacity: 0.8;
+  }
+
+  .hero__status {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin-top: var(--s-5);
+    font-size: var(--t-xs);
+    color: var(--bone-2);
+  }
+
+  .hero__media {
+    grid-column: 8 / -1;
+    position: relative;
+  }
+
+  .hero__art {
+    box-shadow: 0 0 0 1px var(--line);
+  }
+
+  .hero__cap {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--s-3);
+    font-size: var(--t-xs);
+    color: var(--taupe);
+  }
+
+  .hero__trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3) var(--s-7);
+    padding-block: var(--s-7) var(--s-6);
+    font-size: var(--t-sm);
+    color: var(--bone-2);
+  }
+
+  .hero__trust li {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .hero__trust strong {
+    color: var(--bone);
+    font-weight: 500;
+  }
+
+  .stars {
+    display: inline-flex;
+    gap: 1px;
+    color: var(--brass);
+  }
+
+  .stars :global(svg) {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+
+  /* ── The reveal: a veil lifts off the image on load ── */
+  .hero__media::after {
+    content: '';
+    position: absolute;
+    inset: 0 0 calc(var(--s-3) + 1.2em);
+    background: var(--ink);
+    transform-origin: top;
+    animation: veil 1.6s var(--ease-in-out) 0.25s both;
+  }
+
+  @keyframes veil {
+    to {
+      transform: scaleY(0);
+    }
+  }
+
+  /* ── Scroll-linked: light rakes across, image drifts (where supported) ── */
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .hero__art :global(.art__light) {
+        animation: rake linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 90vh;
+      }
+
+      .hero__art {
+        animation: drift linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 100vh;
+      }
+    }
+  }
+
+  @keyframes rake {
+    from {
+      transform: translate3d(-35%, 0, 0);
+    }
+    to {
+      transform: translate3d(40%, 0, 0);
+    }
+  }
+
+  @keyframes drift {
+    to {
+      transform: translate3d(0, 12%, 0) scale(0.96);
+    }
+  }
+
+  @media (max-width: 59.99rem) {
+    .hero {
+      padding-top: calc(var(--header-h) + var(--s-6));
+    }
+
+    .hero__grid {
+      grid-template-columns: 1fr;
+      gap: var(--s-7);
+    }
+
+    .hero__copy,
+    .hero__media {
+      grid-column: 1 / -1;
+    }
+
+    .hero__media {
+      max-width: 34rem;
+    }
+
+    .hero__art {
+      aspect-ratio: 5 / 4;
+    }
+
+    .hero__trust {
+      flex-direction: column;
+      gap: var(--s-3);
+    }
+  }
+
+  @media (max-width: 29.99rem) {
+    .hero__actions .btn {
+      width: 100%;
+    }
+
+    .hero__num {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__media::after {
+      animation: none;
+      display: none;
+    }
+  }
+</style>

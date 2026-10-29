@@ -1,0 +1,23 @@
+---
+/** Static redirect for legacy URLs (GitHub Pages has no server-side redirects). */
+interface Props {
+  to: string;
+}
+const { to } = Astro.props;
+const target = new URL(to, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting…</title>
+    <link rel="canonical" href={target} />
+    <meta name="robots" content="noindex, follow" />
+    <meta http-equiv="refresh" content={`0; url=${to}`} />
+    <script is:inline define:vars={{ to }}>location.replace(to);</script>
+  </head>
+  <body style="background:#0e0d0b;color:#ece5d8;font-family:system-ui;padding:2rem">
+    <a href={to} style="color:inherit">Continue to Reveal A Youthful You</a>
+  </body>
+</html>

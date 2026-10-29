@@ -1,0 +1,538 @@
+---
+import Icon from './Icon.astro';
+import { business, treatments } from '../data/site';
+import { telHref, smsHref, consultText, hoursRows, address } from '../data/helpers';
+
+interface Props {
+  topic?: string;
+}
+const { topic } = Astro.props;
+const times = ['Morning', 'Afternoon', 'Evening', 'Anytime'];
+---
+
+<section class="section paper book" id="book" aria-labelledby="book-title">
+  <div class="wrap book__grid">
+    <div class="book__call">
+      <p class="eyebrow">Book a free consultation</p>
+      <h2 id="book-title" class="display lines" data-reveal>
+        <span class="line"><span>Book by phone.</span></span>
+        <span class="line"><span><em>Or we’ll call you.</em></span></span>
+      </h2>
+
+      <a class="book__phone" href={telHref} data-reveal style="--i:2">
+        <span class="sr-only">Call </span>{business.phone}
+        <Icon name="arrow" class="book__phone-arrow" />
+      </a>
+
+      <p class="book__hint" data-hours-status data-reveal style="--i:3">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span data-hours-hint>Call during opening hours, or leave your number and we’ll call you back.</span>
+      </p>
+
+      <div class="book__alt" data-reveal style="--i:4">
+        {
+          business.smsEnabled && (
+            <a class="btn btn--ghost" href={smsHref(consultText(topic))} data-sms data-sms-base={topic ?? ''}>
+              <Icon name="message" /> Text us instead
+            </a>
+          )
+        }
+        <a class="btn btn--ghost" href={business.mapsUrl} target="_blank" rel="noopener">
+          <Icon name="pin" /> Directions <span class="sr-only">(opens Google Maps)</span>
+        </a>
+      </div>
+
+      <div class="book__info" data-reveal style="--i:5">
+        <div>
+          <h3 class="eyebrow">Find us</h3>
+          <p>{address}</p>
+        </div>
+        <div>
+          <h3 class="eyebrow">Hours</h3>
+          <dl class="book__hours" data-hours-table>
+            {
+              hoursRows().map((r) => (
+                <div data-from={r.from} data-to={r.to}>
+                  <dt>{r.days}</dt>
+                  <dd class="mono">{r.time}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+      </div>
+    </div>
+
+    <div class="book__form-wrap" data-reveal style="--i:2">
+      <form class="cb" data-callback novalidate aria-labelledby="cb-title" data-endpoint={business.formEndpoint}>
+        <div class="cb__head">
+          <h3 id="cb-title" class="cb__title">Request a call back</h3>
+          <p class="mono">Takes 20 seconds · No spam, ever</p>
+        </div>
+
+        <div class="field">
+          <label for="cb-name">Your name</label>
+          <input id="cb-name" name="name" type="text" autocomplete="name" required aria-describedby="cb-name-err" />
+          <p class="field__err" id="cb-name-err" aria-live="polite"></p>
+        </div>
+
+        <div class="field">
+          <label for="cb-phone">Phone number</label>
+          <input
+            id="cb-phone"
+            name="phone"
+            type="tel"
+            inputmode="tel"
+            autocomplete="tel"
+            required
+            aria-describedby="cb-phone-err"
+          />
+          <p class="field__err" id="cb-phone-err" aria-live="polite"></p>
+        </div>
+
+        <div class="field">
+          <label for="cb-topic">Interested in <span class="opt">optional</span></label>
+          <div class="select">
+            <select id="cb-topic" name="interest" data-topic-select>
+              <option value="">Not sure yet, help me choose</option>
+              {treatments.map((t) => <option value={t.name} selected={t.name === topic}>{t.name}</option>)}
+              <option value="other" data-other hidden></option>
+            </select>
+          </div>
+        </div>
+
+        <fieldset class="field times">
+          <legend>Best time to call <span class="opt">optional</span></legend>
+          <div class="times__opts">
+            {
+              times.map((t, i) => (
+                <label>
+                  <input type="radio" name="time" value={t} checked={i === times.length - 1} />
+                  <span>{t}</span>
+                </label>
+              ))
+            }
+          </div>
+        </fieldset>
+
+        <div class="hp" aria-hidden="true">
+          <label for="cb-company">Company</label>
+          <input id="cb-company" name="company" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <button class="btn btn--lg cb__submit" type="submit" data-magnetic>
+          <span class="cb__label">Call me back</span>
+          <span class="cb__spinner" aria-hidden="true"></span>
+          <Icon name="arrow" class="arrow" />
+        </button>
+        <p class="cb__status" role="status" aria-live="polite" data-cb-status></p>
+      </form>
+
+      <div class="cb cb--done" data-callback-done hidden tabindex="-1">
+        <span class="cb__check" aria-hidden="true"><Icon name="check" /></span>
+        <h3 class="cb__title" data-done-title>Thanks. We’ll call you soon.</h3>
+        <p class="muted" data-done-body></p>
+        <a class="btn btn--ghost" href={telHref}><Icon name="phone" /> Or call now: {business.phone}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .book__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--s-8) var(--s-6);
+    align-items: start;
+  }
+
+  .book__call {
+    grid-column: 1 / span 6;
+  }
+
+  .book__call h2 {
+    margin-block: var(--s-5) var(--s-7);
+  }
+
+  .book__phone {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-4);
+    font-family: var(--serif);
+    font-size: clamp(2.5rem, 1.5rem + 4.4vw, 5.25rem);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    font-variant-numeric: lining-nums;
+    white-space: nowrap;
+  }
+
+  .book__phone :global(.book__phone-arrow) {
+    width: 0.5em;
+    height: 0.5em;
+    color: var(--paper-accent);
+    transition: transform var(--dur-2) var(--ease-out);
+  }
+
+  .book__phone:hover :global(.book__phone-arrow) {
+    transform: translateX(0.15em) rotate(-45deg);
+  }
+
+  .book__hint {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-3);
+    margin-top: var(--s-4);
+    color: var(--paper-muted);
+    max-width: 44ch;
+  }
+
+  .book__hint .status-dot {
+    transform: translateY(-0.1em);
+  }
+
+  .paper [data-open='true'] .status-dot {
+    background: #3f8a4a;
+  }
+
+  .book__alt {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    margin-top: var(--s-6);
+  }
+
+  .book__info {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-6);
+    margin-top: var(--s-8);
+    padding-top: var(--s-6);
+    border-top: 1px solid var(--paper-line);
+    font-size: var(--t-sm);
+  }
+
+  .book__info h3 {
+    margin-bottom: var(--s-3);
+  }
+
+  .book__hours div {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-4);
+    padding-block: 2px;
+    color: var(--paper-muted);
+  }
+
+  .book__hours div[data-today] {
+    color: var(--paper-ink);
+    font-weight: 500;
+  }
+
+  .book__hours div[data-today] dt::after {
+    content: ' · today';
+    font-weight: 400;
+    color: var(--paper-accent);
+  }
+
+  /* ── Call-back form ── */
+  .book__form-wrap {
+    grid-column: 8 / -1;
+    position: sticky;
+    top: calc(var(--header-h) + var(--s-5));
+  }
+
+  .cb {
+    display: grid;
+    gap: var(--s-5);
+    padding: var(--s-6);
+    border-radius: 4px;
+    background: var(--ink);
+    color: var(--bone);
+    color-scheme: dark;
+    box-shadow: 0 30px 80px -30px rgb(14 13 11 / 0.55);
+  }
+
+  .cb[hidden] {
+    display: none;
+  }
+
+  /* The form card is dark inside a light section: restore dark-theme buttons. */
+  .cb .btn.cb__submit {
+    --btn-bg: var(--brass);
+    --btn-fg: var(--brass-ink);
+    --btn-hover: var(--bone);
+  }
+
+  .cb .btn.btn--ghost {
+    --btn-fg: var(--bone);
+    --btn-hover: rgb(236 229 216 / 0.08);
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+  }
+
+  .cb__head .mono {
+    margin-top: var(--s-2);
+    font-size: var(--t-xs);
+    color: var(--taupe);
+  }
+
+  .cb__title {
+    font-family: var(--serif);
+    font-size: var(--t-xl);
+    line-height: 1.1;
+  }
+
+  .field {
+    display: grid;
+    gap: var(--s-2);
+    border: 0;
+    padding: 0;
+    min-width: 0;
+  }
+
+  .field label,
+  .field legend {
+    font-size: var(--t-sm);
+    color: var(--bone-2);
+    padding: 0;
+  }
+
+  .opt {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    color: var(--taupe);
+    margin-left: var(--s-2);
+  }
+
+  .field input[type='text'],
+  .field input[type='tel'],
+  .field select {
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0 var(--s-4);
+    border: 0;
+    border-radius: 4px;
+    background: var(--ink-3);
+    box-shadow: inset 0 0 0 1px var(--line);
+    font-size: 1rem; /* 16px stops iOS zooming on focus */
+    transition: box-shadow var(--dur-1) var(--ease-out);
+    appearance: none;
+  }
+
+  .field input:hover,
+  .field select:hover {
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+  }
+
+  .field input:focus-visible,
+  .field select:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 1px var(--brass);
+  }
+
+  .field input[aria-invalid='true'] {
+    box-shadow: inset 0 0 0 1px var(--warn);
+  }
+
+  .field__err {
+    min-height: 0;
+    font-size: var(--t-xs);
+    color: var(--warn);
+  }
+
+  .field__err:empty {
+    display: none;
+  }
+
+  .select {
+    position: relative;
+  }
+
+  .select::after {
+    content: '';
+    position: absolute;
+    right: var(--s-4);
+    top: 50%;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-right: 1.5px solid var(--bone-2);
+    border-bottom: 1.5px solid var(--bone-2);
+    transform: translateY(-70%) rotate(45deg);
+    pointer-events: none;
+  }
+
+  .select select {
+    padding-right: var(--s-7);
+    cursor: pointer;
+  }
+
+  .times__opts {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s-2);
+    margin-top: var(--s-2);
+  }
+
+  .times label {
+    position: relative;
+  }
+
+  .times input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .times__opts span {
+    display: grid;
+    place-items: center;
+    min-height: 2.75rem;
+    border-radius: 4px;
+    font-size: var(--t-xs);
+    color: var(--bone);
+    box-shadow: inset 0 0 0 1px var(--line);
+    transition:
+      box-shadow var(--dur-1) var(--ease-out),
+      background-color var(--dur-1) var(--ease-out);
+  }
+
+  .times label:hover span {
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+  }
+
+  .times input:checked + span {
+    background: rgb(201 171 126 / 0.12);
+    box-shadow: inset 0 0 0 1px var(--brass);
+  }
+
+  .times input:focus-visible + span {
+    outline: 2px solid var(--brass-hi);
+    outline-offset: 2px;
+  }
+
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .cb__submit {
+    width: 100%;
+  }
+
+  .cb__spinner {
+    display: none;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    border-right-color: transparent;
+    animation: spin 0.7s linear infinite;
+  }
+
+  .cb[data-state='loading'] .cb__spinner {
+    display: block;
+  }
+
+  .cb[data-state='loading'] .arrow {
+    display: none;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+  .cb__status {
+    font-size: var(--t-sm);
+    color: var(--bone-2);
+  }
+
+  .cb__status:empty {
+    display: none;
+  }
+
+  .cb[data-state='error'] .cb__status {
+    color: var(--warn);
+  }
+
+  .cb__status :global(a) {
+    color: var(--brass-hi);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .cb--done {
+    justify-items: start;
+    animation: done-in var(--dur-3) var(--ease-out);
+  }
+
+  .cb--done:focus {
+    outline: none;
+  }
+
+  .cb__check {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: var(--brass);
+    color: var(--brass-ink);
+  }
+
+  .cb__check :global(svg) {
+    width: 1.5rem;
+    height: 1.5rem;
+    stroke-width: 2;
+  }
+
+  @keyframes done-in {
+    from {
+      opacity: 0;
+      transform: translateY(1rem) scale(0.98);
+    }
+  }
+
+  @media (max-width: 59.99rem) {
+    .book__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .book__call,
+    .book__form-wrap {
+      grid-column: 1 / -1;
+    }
+
+    .book__form-wrap {
+      position: static;
+    }
+  }
+
+  @media (max-width: 29.99rem) {
+    .cb {
+      padding: var(--s-5);
+      margin-inline: calc(var(--gutter) * -0.5);
+    }
+
+    .times__opts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .book__info {
+      grid-template-columns: 1fr;
+    }
+
+    .book__phone {
+      font-size: clamp(2rem, 10.5vw, 2.5rem);
+    }
+  }
+</style>
+
+<script>
+  import { initCallback } from '../scripts/callback';
+  initCallback();
+</script>

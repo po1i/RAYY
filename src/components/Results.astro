@@ -1,0 +1,298 @@
+---
+import Icon from './Icon.astro';
+import { business } from '../data/site';
+
+const stats = [
+  { k: '3–14 days', v: 'for Botox to fully settle' },
+  { k: '2 weeks', v: 'for filler swelling to resolve' },
+  { k: '3 sessions', v: 'a typical RF microneedling course' },
+];
+---
+
+<section class="section paper res" id="results" aria-labelledby="res-title">
+  <div class="wrap res__grid">
+    <div class="res__copy">
+      <p class="eyebrow">Results</p>
+      <h2 id="res-title" class="display lines" data-reveal>
+        <span class="line"><span>Subtle is</span></span>
+        <span class="line"><span><em>the point.</em></span></span>
+      </h2>
+      <p class="lede" data-reveal style="--i:2">
+        The best compliment is “you look well”, not “what did you have done?” We plan conservatively, build gradually
+        and check in after, so results look like you on a good day.
+      </p>
+      <dl class="res__stats" data-reveal style="--i:3">
+        {
+          stats.map((s) => (
+            <div>
+              <dt class="mono">{s.k}</dt>
+              <dd>{s.v}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <a class="link res__ig" href={business.instagram} target="_blank" rel="noopener" data-reveal style="--i:4">
+        See client results on Instagram <span class="sr-only">(opens in a new tab)</span>
+        <Icon name="arrow" class="ic" />
+      </a>
+    </div>
+
+    <figure class="res__fig" data-reveal style="--i:1" data-placeholder>
+      <div class="cmp" data-compare style="--p:50">
+        <svg class="cmp__layer" viewBox="0 0 800 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs>
+            <filter id="skin-after" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+              <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="4" result="n"></feTurbulence>
+              <feDiffuseLighting in="n" surfaceScale="1.2" diffuseConstant="1.05" lighting-color="#ecd0b3">
+                <feDistantLight azimuth="235" elevation="58"></feDistantLight>
+              </feDiffuseLighting>
+            </filter>
+            <radialGradient id="glow-after" cx="35%" cy="25%" r="85%">
+              <stop offset="0" stop-color="#fff3e4" stop-opacity="0.35"></stop>
+              <stop offset="1" stop-color="#3b261a" stop-opacity="0.55"></stop>
+            </radialGradient>
+          </defs>
+          <rect width="800" height="1000" filter="url(#skin-after)"></rect>
+          <rect width="800" height="1000" fill="url(#glow-after)"></rect>
+        </svg>
+
+        <div class="cmp__clip" aria-hidden="true">
+          <div class="cmp__inner">
+            <svg class="cmp__layer" viewBox="0 0 800 1000" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <filter id="skin-before" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+                  <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="4" seed="9" result="n"
+                  ></feTurbulence>
+                  <feDiffuseLighting in="n" surfaceScale="5" diffuseConstant="1" lighting-color="#ddb998">
+                    <feDistantLight azimuth="235" elevation="42"></feDistantLight>
+                  </feDiffuseLighting>
+                </filter>
+                <radialGradient id="glow-before" cx="35%" cy="25%" r="85%">
+                  <stop offset="0" stop-color="#f3dfc8" stop-opacity="0.15"></stop>
+                  <stop offset="1" stop-color="#2c1b12" stop-opacity="0.65"></stop>
+                </radialGradient>
+              </defs>
+              <rect width="800" height="1000" filter="url(#skin-before)"></rect>
+              <rect width="800" height="1000" fill="url(#glow-before)"></rect>
+              <g fill="#6b4128" opacity="0.28">
+                <circle cx="210" cy="320" r="26"></circle>
+                <circle cx="520" cy="210" r="18"></circle>
+                <circle cx="430" cy="610" r="34"></circle>
+                <circle cx="640" cy="760" r="22"></circle>
+                <circle cx="160" cy="820" r="16"></circle>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <span class="cmp__tag cmp__tag--l mono" aria-hidden="true">Before</span>
+        <span class="cmp__tag cmp__tag--r mono" aria-hidden="true">After</span>
+
+        <div class="cmp__handle">
+          <span class="cmp__line" aria-hidden="true"></span>
+          <button
+            type="button"
+            class="cmp__knob"
+            role="slider"
+            aria-label="Compare before and after"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="50"
+            aria-valuetext="50% before"
+            data-compare-knob
+          >
+            <Icon name="drag" />
+          </button>
+        </div>
+      </div>
+      <figcaption class="mono">Illustration: skin texture before and after a course of RF microneedling.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .res__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--s-7) var(--s-6);
+    align-items: center;
+  }
+
+  .res__copy {
+    grid-column: 1 / span 5;
+  }
+
+  .res__copy h2 {
+    margin-block: var(--s-5);
+  }
+
+  .res__stats {
+    margin-block: var(--s-7) var(--s-6);
+    border-top: 1px solid var(--paper-line);
+  }
+
+  .res__stats div {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    gap: var(--s-4);
+    padding-block: var(--s-4);
+    border-bottom: 1px solid var(--paper-line);
+    font-size: var(--t-sm);
+  }
+
+  .res__stats dt {
+    color: var(--paper-accent);
+  }
+
+  .res__stats dd {
+    color: var(--paper-muted);
+  }
+
+  .res__ig {
+    font-size: var(--t-sm);
+    font-weight: 500;
+  }
+
+  .res__fig {
+    grid-column: 7 / -1;
+  }
+
+  .res__fig figcaption {
+    margin-top: var(--s-3);
+    font-size: var(--t-xs);
+    color: var(--paper-muted);
+  }
+
+  /* ── Compare: every moving part is a transform ── */
+  .cmp {
+    --x: calc(var(--p) * 1%);
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: #2a1c14;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: ew-resize;
+  }
+
+  .cmp__layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .cmp__clip,
+  .cmp__inner,
+  .cmp__handle {
+    position: absolute;
+    inset: 0;
+    will-change: transform;
+  }
+
+  .cmp__clip {
+    overflow: hidden;
+    transform: translate3d(calc(var(--x) - 100%), 0, 0);
+  }
+
+  .cmp__inner {
+    transform: translate3d(calc(100% - var(--x)), 0, 0);
+  }
+
+  .cmp__handle {
+    pointer-events: none;
+    transform: translate3d(var(--x), 0, 0);
+  }
+
+  .cmp[data-animating] .cmp__clip,
+  .cmp[data-animating] .cmp__inner,
+  .cmp[data-animating] .cmp__handle {
+    transition: transform 1.1s var(--ease-in-out);
+  }
+
+  .cmp__line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -0.5px;
+    width: 1px;
+    background: rgb(255 246 234 / 0.85);
+  }
+
+  .cmp__knob {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 3.25rem;
+    height: 3.25rem;
+    margin: -1.625rem 0 0 -1.625rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--paper);
+    color: var(--paper-ink);
+    box-shadow: 0 6px 24px rgb(0 0 0 / 0.35);
+    pointer-events: auto;
+    cursor: grab;
+    transition: transform var(--dur-1) var(--ease-out);
+  }
+
+  .cmp__knob :global(svg) {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .cmp[data-dragging] .cmp__knob {
+    transform: scale(1.08);
+    cursor: grabbing;
+  }
+
+  .cmp__knob:focus-visible {
+    outline: 2px solid var(--paper);
+    outline-offset: 4px;
+  }
+
+  .cmp__tag {
+    position: absolute;
+    top: var(--s-4);
+    padding: 4px 8px;
+    border-radius: 2px;
+    font-size: var(--t-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff6ea;
+    background: rgb(14 13 11 / 0.45);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+
+  .cmp__tag--l {
+    left: var(--s-4);
+  }
+
+  .cmp__tag--r {
+    right: var(--s-4);
+  }
+
+  @media (max-width: 59.99rem) {
+    .res__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .res__copy,
+    .res__fig {
+      grid-column: 1 / -1;
+    }
+
+    .res__fig {
+      max-width: 34rem;
+    }
+  }
+</style>
+
+<script>
+  import { initCompare } from '../scripts/compare';
+  initCompare();
+</script>

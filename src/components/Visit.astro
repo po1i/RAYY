@@ -1,0 +1,229 @@
+---
+import Icon from './Icon.astro';
+import { business, visitSteps } from '../data/site';
+import { telHref } from '../data/helpers';
+---
+
+<section class="section visit" id="visit" aria-labelledby="visit-title" data-visit style={`--n:${visitSteps.length}`}>
+  <div class="wrap visit__grid">
+    <div class="visit__aside">
+      <div class="visit__sticky">
+        <p class="eyebrow">Your first visit</p>
+        <h2 id="visit-title" class="display lines" data-reveal>
+          <span class="line"><span>No surprises,</span></span>
+          <span class="line"><span><em>start to finish.</em></span></span>
+        </h2>
+        <p class="lede" data-reveal style="--i:2">Here’s exactly what happens, so the first call is the hardest part.</p>
+
+        <div class="visit__meter" aria-hidden="true">
+          <span class="visit__count">
+            <span class="visit__digits" data-visit-digits>
+              {visitSteps.map((_, i) => <span>{String(i + 1).padStart(2, '0')}</span>)}
+            </span>
+          </span>
+          <span class="visit__rail"><span class="visit__fill"></span></span>
+          <span class="visit__of mono">/ {String(visitSteps.length).padStart(2, '0')}</span>
+        </div>
+      </div>
+    </div>
+
+    <ol class="visit__steps" role="list">
+      {
+        visitSteps.map((s, i) => (
+          <li class="step" data-step={i} data-placeholder={s.placeholder || undefined}>
+            <span class="step__n mono">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="step__title">{s.title}</h3>
+            <p class="step__body">{s.body}</p>
+            <p class="step__meta mono">{s.meta}</p>
+          </li>
+        ))
+      }
+      <li class="step step--cta">
+        <p class="step__title">Step one takes two minutes.</p>
+        <a class="btn btn--lg" href={telHref} data-magnetic>
+          <Icon name="phone" /> Call {business.phone}
+        </a>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<style>
+  .visit__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--s-6);
+  }
+
+  .visit__aside {
+    grid-column: 1 / span 5;
+  }
+
+  .visit__sticky {
+    position: sticky;
+    top: calc(var(--header-h) + var(--s-7));
+  }
+
+  .visit__sticky h2 {
+    margin-block: var(--s-5);
+  }
+
+  .visit__meter {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    margin-top: var(--s-8);
+  }
+
+  .visit__count {
+    height: 1em;
+    overflow: hidden;
+    font-family: var(--serif);
+    font-size: var(--t-2xl);
+    line-height: 1;
+    color: var(--brass);
+  }
+
+  .visit__digits {
+    display: flex;
+    flex-direction: column;
+    transform: translate3d(0, calc(var(--active, 0) * -1em), 0);
+    transition: transform var(--dur-3) var(--ease-out);
+  }
+
+  .visit__rail {
+    position: relative;
+    flex: 1;
+    max-width: 12rem;
+    height: 1px;
+    background: var(--line-strong);
+    overflow: hidden;
+  }
+
+  .visit__fill {
+    position: absolute;
+    inset: 0;
+    background: var(--brass);
+    transform-origin: left;
+    transform: scaleX(calc((var(--active, 0) + 1) / var(--n)));
+    transition: transform var(--dur-3) var(--ease-out);
+  }
+
+  .visit__of {
+    font-size: var(--t-xs);
+    color: var(--taupe);
+  }
+
+  .visit__steps {
+    grid-column: 7 / -1;
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  .step {
+    min-height: min(56vh, 30rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--s-4);
+    padding: var(--s-7) var(--s-6);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--ink-2);
+    transition:
+      opacity var(--dur-3) var(--ease-out),
+      transform var(--dur-3) var(--ease-out);
+  }
+
+  /* Only dim inactive steps once the script is running to light them up. */
+  @media (min-width: 60rem) {
+    :global(.js) .step:not([data-active], .step--cta) {
+      opacity: 0.4;
+      transform: scale(0.97);
+    }
+  }
+
+  .step__n {
+    color: var(--brass);
+    font-size: var(--t-xs);
+  }
+
+  .step__title {
+    font-family: var(--serif);
+    font-size: var(--t-xl);
+    line-height: 1.1;
+  }
+
+  .step__body {
+    color: var(--bone-2);
+    max-width: 42ch;
+  }
+
+  .step__meta {
+    align-self: flex-start;
+    margin-top: var(--s-3);
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: var(--t-xs);
+    color: var(--bone-2);
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+  }
+
+  .step--cta {
+    min-height: auto;
+    align-items: flex-start;
+    background: none;
+    border-color: transparent;
+    padding-inline: 0;
+  }
+
+  @media (max-width: 59.99rem) {
+    .visit__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .visit__aside,
+    .visit__steps {
+      grid-column: 1 / -1;
+    }
+
+    .visit__sticky {
+      position: static;
+    }
+
+    .visit__meter {
+      display: none;
+    }
+
+    .step {
+      min-height: 0;
+      padding: var(--s-6) var(--s-5);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .step {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-visit]');
+  if (root) {
+    const steps = [...root.querySelectorAll<HTMLElement>('[data-step]')];
+    const activate = (i: number) => {
+      steps.forEach((s, j) => s.toggleAttribute('data-active', i === j));
+      root.style.setProperty('--active', String(i));
+    };
+    activate(0);
+    // A step is active while it crosses the middle band of the viewport.
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) if (e.isIntersecting) activate(Number((e.target as HTMLElement).dataset.step));
+      },
+      { rootMargin: '-45% 0px -45% 0px' },
+    );
+    steps.forEach((s) => io.observe(s));
+  }
+</script>

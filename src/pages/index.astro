@@ -1,0 +1,26 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Treatments from '../components/Treatments.astro';
+import Results from '../components/Results.astro';
+import Visit from '../components/Visit.astro';
+import About from '../components/About.astro';
+import Reviews from '../components/Reviews.astro';
+import Faq from '../components/Faq.astro';
+import Book from '../components/Book.astro';
+import { faqs } from '../data/site';
+---
+
+<Base
+  title="Reveal A Youthful You · Botox, Fillers & Skin Treatments in Roslindale, Boston"
+  description="Nurse-practitioner-led Botox, Dysport, fillers, RF microneedling, peels, IV therapy and medical weight loss in Roslindale, Boston. Natural results, prices up front, free consultations. Call (617) 991-6608."
+>
+  <Hero />
+  <Treatments />
+  <Results />
+  <Visit />
+  <About />
+  <Reviews />
+  <Faq items={faqs} />
+  <Book />
+</Base>

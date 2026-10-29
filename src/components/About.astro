@@ -1,0 +1,161 @@
+---
+import Art from './Art.astro';
+import { team } from '../data/site';
+
+const [founder, ...rest] = team;
+const creds = [
+  { k: '~20 yrs', v: 'in medicine' },
+  { k: 'SICU', v: 'surgical ICU nursing background' },
+  { k: 'NP', v: 'practising at Boston Medical Center' },
+];
+---
+
+<section class="section paper about" id="about" aria-labelledby="about-title">
+  <div class="wrap about__grid">
+    <div class="about__media" data-reveal>
+      <Art variant="cool" ratio="4 / 5" sizes="(min-width: 60rem) 40vw, 100vw" />
+    </div>
+
+    <div class="about__copy">
+      <p class="eyebrow">Who you’ll see</p>
+      <h2 id="about-title" class="display lines" data-reveal>
+        <span class="line"><span>Clinical first.</span></span>
+        <span class="line"><span><em>Then</em> cosmetic.</span></span>
+      </h2>
+
+      <p class="about__name" data-reveal style="--i:2">
+        {founder.name} <span class="mono">{founder.role}</span>
+      </p>
+      <p class="lede about__bio" data-reveal style="--i:3">{founder.bio}</p>
+
+      <dl class="about__creds" data-reveal style="--i:4">
+        {
+          creds.map((c) => (
+            <div>
+              <dt>{c.k}</dt>
+              <dd class="mono">{c.v}</dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      <div class="about__team" data-reveal style="--i:5">
+        <p class="eyebrow">Also on the team</p>
+        <ul role="list">
+          {
+            rest.map((m) => (
+              <li data-placeholder={m.placeholder || undefined}>
+                <span class="about__tname">{m.name}</span>
+                <span class="mono">{m.role}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--s-7) var(--s-6);
+    align-items: center;
+  }
+
+  .about__media {
+    grid-column: 1 / span 5;
+  }
+
+  .about__copy {
+    grid-column: 7 / -1;
+  }
+
+  .about__copy h2 {
+    margin-block: var(--s-5) var(--s-7);
+  }
+
+  .about__name {
+    font-family: var(--serif);
+    font-size: var(--t-xl);
+    line-height: 1.1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s-2) var(--s-4);
+  }
+
+  .about__name .mono {
+    font-size: var(--t-xs);
+    color: var(--paper-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .about__bio {
+    margin-top: var(--s-4);
+    max-width: 48ch;
+  }
+
+  .about__creds {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-5);
+    margin-block: var(--s-7);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--paper-line);
+  }
+
+  .about__creds dt {
+    font-family: var(--serif);
+    font-size: var(--t-xl);
+    color: var(--paper-accent);
+    line-height: 1;
+  }
+
+  .about__creds dd {
+    margin-top: var(--s-2);
+    font-size: var(--t-xs);
+    color: var(--paper-muted);
+  }
+
+  .about__team ul {
+    display: grid;
+    gap: var(--s-2);
+    margin-top: var(--s-4);
+  }
+
+  .about__team li {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-4);
+    padding-block: var(--s-3);
+    border-bottom: 1px solid var(--paper-line);
+  }
+
+  .about__team .mono {
+    font-size: var(--t-xs);
+    color: var(--paper-muted);
+  }
+
+  @media (max-width: 59.99rem) {
+    .about__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .about__media,
+    .about__copy {
+      grid-column: 1 / -1;
+    }
+
+    .about__media {
+      max-width: 28rem;
+    }
+  }
+
+  @media (max-width: 29.99rem) {
+    .about__creds {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

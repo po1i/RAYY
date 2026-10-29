@@ -1,0 +1,155 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  items: { q: string; a: string; placeholder?: boolean }[];
+  title?: string;
+  id?: string;
+}
+const { items, title = 'Questions, answered.', id = 'faq' } = Astro.props;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+
+<section class="section faq" id={id} aria-labelledby={`${id}-title`}>
+  <div class="wrap faq__grid">
+    <div class="faq__head">
+      <p class="eyebrow">FAQ</p>
+      <h2 id={`${id}-title`} class="display">{title}</h2>
+      <p class="muted">
+        Something else? <a class="link" href="#book">Ask us directly</a>.
+      </p>
+    </div>
+    <div class="faq__list">
+      {
+        items.map((f) => (
+          <details class="qa" data-placeholder={f.placeholder || undefined}>
+            <summary>
+              <span>{f.q}</span>
+              <span class="qa__icon" aria-hidden="true">
+                <Icon name="plus" />
+              </span>
+            </summary>
+            <div class="qa__a">
+              <p>{f.a}</p>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</section>
+
+<style>
+  .faq__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--s-7) var(--s-6);
+  }
+
+  .faq__head {
+    grid-column: 1 / span 4;
+    align-self: start;
+    position: sticky;
+    top: calc(var(--header-h) + var(--s-6));
+  }
+
+  .faq__head h2 {
+    margin-block: var(--s-5);
+  }
+
+  .faq__head p:last-child {
+    font-size: var(--t-sm);
+  }
+
+  .faq__list {
+    grid-column: 6 / -1;
+    border-top: 1px solid var(--line);
+  }
+
+  .qa {
+    border-bottom: 1px solid var(--line);
+  }
+
+  summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--s-5);
+    padding-block: var(--s-5);
+    font-size: var(--t-lg);
+    line-height: 1.35;
+    cursor: pointer;
+    list-style: none;
+    transition: color var(--dur-1) var(--ease-out);
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary:hover {
+    color: var(--brass-hi);
+  }
+
+  .qa__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+    transition:
+      transform var(--dur-2) var(--ease-out),
+      background-color var(--dur-2) var(--ease-out);
+  }
+
+  .qa__icon :global(svg) {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .qa[open] .qa__icon {
+    transform: rotate(45deg);
+    background: var(--brass);
+    color: var(--brass-ink);
+    box-shadow: none;
+  }
+
+  .qa__a {
+    padding-bottom: var(--s-6);
+    max-width: 58ch;
+    color: var(--bone-2);
+  }
+
+  .qa[open] .qa__a {
+    animation: qa-in var(--dur-2) var(--ease-out);
+  }
+
+  @keyframes qa-in {
+    from {
+      opacity: 0;
+      transform: translateY(-0.5rem);
+    }
+  }
+
+  @media (max-width: 59.99rem) {
+    .faq__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .faq__head,
+    .faq__list {
+      grid-column: 1 / -1;
+    }
+
+    .faq__head {
+      position: static;
+    }
+  }
+</style>

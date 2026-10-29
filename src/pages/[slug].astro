@@ -1,0 +1,400 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Art from '../components/Art.astro';
+import Faq from '../components/Faq.astro';
+import Book from '../components/Book.astro';
+import { treatments, concernLabel, type Treatment } from '../data/site';
+import { business } from '../data/business';
+import { href, telHref } from '../data/helpers';
+
+export const getStaticPaths = (() => treatments.map((t) => ({ params: { slug: t.slug }, props: { t } }))) satisfies GetStaticPaths;
+
+const { t } = Astro.props as { t: Treatment };
+const related = treatments.filter((o) => o.slug !== t.slug && o.concerns.some((c) => t.concerns.includes(c))).slice(0, 3);
+const variant = t.group === 'Injectables' ? 'warm' : t.group === 'Skin' ? 'deep' : 'cool';
+
+const procedure = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalProcedure',
+  name: t.name,
+  description: t.intro,
+  howPerformed: t.steps.map((s) => s.body).join(' '),
+  provider: { '@id': new URL(href('/#clinic'), Astro.site).href },
+};
+const crumbs = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: new URL(href('/'), Astro.site).href },
+    { '@type': 'ListItem', position: 2, name: t.name, item: new URL(href(`/${t.slug}/`), Astro.site).href },
+  ],
+};
+---
+
+<Base
+  title={`${t.name} in Roslindale, Boston · ${business.name}`}
+  description={`${t.intro.split('. ')[0]}. ${t.price}. Free consultation with a nurse practitioner. Call ${business.phone}.`}
+  schema={[procedure, crumbs]}
+  topic={t.name}
+>
+  <section class="tp-hero" aria-labelledby="tp-title" data-topic-page={t.name}>
+    <div class="wrap tp-hero__grid">
+      <div class="tp-hero__copy">
+        <nav class="crumbs mono" aria-label="Breadcrumb">
+          <a class="link" href={href('/#treatments')}>Treatments</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">{t.group}</span>
+        </nav>
+        <h1 id="tp-title" class="display tp-hero__title lines" data-reveal>
+          <span class="line"><span>{t.name}</span></span>
+        </h1>
+        <p class="lede" data-reveal style="--i:2">{t.short}</p>
+
+        <dl class="tp-spec mono" data-reveal style="--i:3">
+          <div>
+            <dt>Price</dt>
+            <dd data-placeholder={t.pricePlaceholder || undefined}>{t.price}</dd>
+          </div>
+          <div>
+            <dt>Time</dt>
+            <dd>{t.duration}</dd>
+          </div>
+          <div>
+            <dt>Downtime</dt>
+            <dd>{t.downtimeLabel}</dd>
+          </div>
+          <div>
+            <dt>Lasts</dt>
+            <dd>{t.lasts}</dd>
+          </div>
+        </dl>
+
+        <div class="tp-hero__actions" data-reveal style="--i:4">
+          <a class="btn btn--lg" href={telHref} data-magnetic>
+            <Icon name="phone" /> Book a free consult
+          </a>
+          <a class="btn btn--lg btn--ghost" href="#book">Call me back <Icon name="arrow-down" class="arrow" /></a>
+        </div>
+      </div>
+      <div class="tp-hero__media">
+        <Art variant={variant} ratio="4 / 5" eager sizes="(min-width: 60rem) 40vw, 100vw" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section tp-body" aria-labelledby="tp-what">
+    <div class="wrap tp-body__grid">
+      <div class="tp-body__main">
+        <h2 id="tp-what" class="eyebrow">What it is</h2>
+        <p class="tp-intro" data-reveal>{t.intro}</p>
+
+        <h2 class="eyebrow tp-sub">How it feels</h2>
+        <p class="lede" data-reveal>{t.feel}</p>
+      </div>
+      <aside class="tp-body__aside" data-reveal>
+        <h2 class="eyebrow">Good for</h2>
+        <ul role="list" class="tp-good">
+          {
+            t.goodFor.map((g) => (
+              <li>
+                <Icon name="check" /> {g}
+              </li>
+            ))
+          }
+        </ul>
+        <p class="tp-concerns mono">
+          Helps with: {t.concerns.map(concernLabel).join(' · ')}
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section paper tp-steps" aria-labelledby="tp-how">
+    <div class="wrap">
+      <p class="eyebrow">Step by step</p>
+      <h2 id="tp-how" class="display tp-steps__title">How your appointment <em>goes.</em></h2>
+      <ol role="list" class="tp-steps__list">
+        {
+          t.steps.map((s, i) => (
+            <li data-reveal style={`--i:${i}`}>
+              <span class="mono">{String(i + 1).padStart(2, '0')}</span>
+              <h3>{s.title}</h3>
+              <p>{s.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <Faq items={t.faqs} title={`${t.name}, answered.`} id="tp-faq" />
+
+  {
+    related.length > 0 && (
+      <section class="section tp-related" aria-labelledby="tp-rel">
+        <div class="wrap">
+          <h2 id="tp-rel" class="eyebrow">Often paired with</h2>
+          <ul role="list" class="tp-related__list">
+            {related.map((r) => (
+              <li>
+                <a href={href(`/${r.slug}/`)}>
+                  <span class="tp-related__name">{r.name}</span>
+                  <span class="muted">{r.short}</span>
+                  <span class="mono tp-related__price">{r.price}</span>
+                  <Icon name="arrow" class="tp-related__arrow" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <Book topic={t.name} />
+</Base>
+
+<script>
+  import { setTopic } from '../scripts/topic';
+  const page = document.querySelector<HTMLElement>('[data-topic-page]');
+  if (page) setTopic(page.dataset.topicPage!);
+</script>
+
+<style>
+  .tp-hero {
+    padding-top: calc(var(--header-h) + var(--s-8));
+    padding-bottom: var(--s-8);
+  }
+
+  .tp-hero__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--s-7) var(--s-6);
+    align-items: end;
+  }
+
+  .tp-hero__copy {
+    grid-column: 1 / span 7;
+  }
+
+  .tp-hero__media {
+    grid-column: 9 / -1;
+  }
+
+  .crumbs {
+    display: flex;
+    gap: var(--s-3);
+    font-size: var(--t-xs);
+    color: var(--taupe);
+  }
+
+  .tp-hero__title {
+    font-size: var(--t-3xl);
+    margin-block: var(--s-6) var(--s-5);
+    letter-spacing: -0.025em;
+  }
+
+  .tp-spec {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    justify-content: start;
+    gap: var(--s-6);
+    margin-top: var(--s-7);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--line);
+    font-size: var(--t-sm);
+  }
+
+  .tp-spec dt {
+    font-size: var(--t-xs);
+    color: var(--taupe);
+    margin-bottom: var(--s-1);
+  }
+
+  .tp-spec div:first-child dd {
+    color: var(--brass);
+  }
+
+  .tp-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    margin-top: var(--s-7);
+  }
+
+  .tp-body__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--s-7) var(--s-6);
+  }
+
+  .tp-body__main {
+    grid-column: 1 / span 7;
+  }
+
+  .tp-intro {
+    margin-top: var(--s-5);
+    font-family: var(--serif);
+    font-size: var(--t-xl);
+    line-height: 1.25;
+  }
+
+  .tp-sub {
+    margin-top: var(--s-8);
+    margin-bottom: var(--s-4);
+  }
+
+  .tp-body__aside {
+    grid-column: 9 / -1;
+    align-self: start;
+    padding: var(--s-6);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+  }
+
+  .tp-good {
+    display: grid;
+    gap: var(--s-3);
+    margin-top: var(--s-4);
+  }
+
+  .tp-good li {
+    display: flex;
+    gap: var(--s-3);
+    align-items: baseline;
+  }
+
+  .tp-good :global(svg) {
+    width: 1rem;
+    height: 1rem;
+    flex: none;
+    color: var(--brass);
+    transform: translateY(0.15em);
+  }
+
+  .tp-concerns {
+    margin-top: var(--s-5);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--line);
+    font-size: var(--t-xs);
+    color: var(--taupe);
+  }
+
+  .tp-steps__title {
+    margin-block: var(--s-5) var(--s-8);
+  }
+
+  .tp-steps__list {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s-6);
+  }
+
+  .tp-steps__list li {
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--paper-line);
+  }
+
+  .tp-steps__list .mono {
+    color: var(--paper-accent);
+    font-size: var(--t-xs);
+  }
+
+  .tp-steps__list h3 {
+    margin-block: var(--s-4) var(--s-3);
+    font-family: var(--serif);
+    font-size: var(--t-xl);
+  }
+
+  .tp-steps__list p {
+    color: var(--paper-muted);
+    font-size: var(--t-sm);
+  }
+
+  .tp-related__list {
+    margin-top: var(--s-5);
+    border-top: 1px solid var(--line);
+  }
+
+  .tp-related__list a {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) auto 1.5rem;
+    gap: var(--s-5);
+    align-items: center;
+    padding-block: var(--s-5);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .tp-related__name {
+    font-family: var(--serif);
+    font-size: var(--t-xl);
+  }
+
+  .tp-related__price {
+    color: var(--brass);
+  }
+
+  .tp-related__list :global(.tp-related__arrow) {
+    width: 1.25rem;
+    height: 1.25rem;
+    transition: transform var(--dur-2) var(--ease-out);
+  }
+
+  .tp-related__list a:hover :global(.tp-related__arrow) {
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 59.99rem) {
+    .tp-hero__grid,
+    .tp-body__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .tp-hero__copy,
+    .tp-hero__media,
+    .tp-body__main,
+    .tp-body__aside {
+      grid-column: 1 / -1;
+    }
+
+    .tp-hero__media {
+      max-width: 28rem;
+    }
+
+    .tp-spec {
+      grid-template-columns: repeat(2, auto);
+    }
+
+    .tp-steps__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .tp-related__list a {
+      grid-template-columns: minmax(0, 1fr) 1.25rem;
+      gap: var(--s-2) var(--s-4);
+    }
+
+    .tp-related__list .muted,
+    .tp-related__price {
+      grid-column: 1;
+    }
+
+    .tp-related__list :global(.tp-related__arrow) {
+      grid-column: 2;
+      grid-row: 1 / span 3;
+    }
+  }
+
+  @media (max-width: 29.99rem) {
+    .tp-steps__list {
+      grid-template-columns: 1fr;
+    }
+
+    .tp-hero__actions .btn {
+      width: 100%;
+    }
+  }
+</style>

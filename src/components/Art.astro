@@ -1,0 +1,130 @@
+---
+/**
+ * Image slot. Renders the real photo when `src` is given; until the clinic
+ * supplies photography it paints a lit, sculptural placeholder in CSS so the
+ * layout, crop and motion can be judged without stock imagery.
+ */
+interface Props {
+  src?: string;
+  alt?: string;
+  variant?: 'warm' | 'cool' | 'deep';
+  ratio?: string;
+  class?: string;
+  eager?: boolean;
+  sizes?: string;
+}
+const { src, alt = '', variant = 'warm', ratio = '4 / 5', class: className, eager = false, sizes = '50vw' } = Astro.props;
+---
+
+<div class:list={['art', `art--${variant}`, className]} style={`--ratio:${ratio}`} data-placeholder={!src || undefined}>
+  {
+    src ? (
+      <img
+        src={src}
+        alt={alt}
+        sizes={sizes}
+        loading={eager ? 'eager' : 'lazy'}
+        fetchpriority={eager ? 'high' : 'auto'}
+        decoding="async"
+      />
+    ) : (
+      <div class="art__paint" aria-hidden="true">
+        <span class="art__form" />
+        <span class="art__rim" />
+      </div>
+    )
+  }
+  <span class="art__light" aria-hidden="true"></span>
+  <slot />
+</div>
+
+<style>
+  .art {
+    --tone-a: #e9d2b8;
+    --tone-b: #b98e6c;
+    --tone-c: #5e4130;
+    --bg-a: #33271e;
+    position: relative;
+    aspect-ratio: var(--ratio);
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--ink-2);
+    isolation: isolate;
+  }
+
+  .art--cool {
+    --tone-a: #d9d3c8;
+    --tone-b: #8f877b;
+    --tone-c: #3d3933;
+    --bg-a: #24221e;
+  }
+
+  .art--deep {
+    --tone-a: #c79c76;
+    --tone-b: #7a543b;
+    --tone-c: #33221a;
+    --bg-a: #2a1f18;
+  }
+
+  .art img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .art__paint {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(120% 80% at 75% 10%, var(--bg-a) 0%, transparent 60%),
+      radial-gradient(90% 60% at 20% 100%, #1b1713 0%, transparent 70%),
+      var(--ink-2);
+  }
+
+  /* Cropped hard so only the curve shows: a macro of a lit surface, like a
+     shoulder or cheekbone, rather than an object sitting in the frame. */
+  .art__form,
+  .art__rim {
+    position: absolute;
+    left: 14%;
+    top: 20%;
+    width: 150%;
+    aspect-ratio: 0.82;
+    border-radius: 50%;
+    transform: rotate(-22deg);
+  }
+
+  .art__form {
+    background: radial-gradient(
+      circle at 22% 22%,
+      var(--tone-a) 0%,
+      var(--tone-b) 18%,
+      var(--tone-c) 40%,
+      #17110d 62%
+    );
+    box-shadow: -30px -20px 120px rgb(0 0 0 / 0.5);
+  }
+
+  .art__rim {
+    box-shadow: inset 10px 8px 26px rgb(255 236 214 / 0.22);
+  }
+
+  /* Raking light; parents translate it to "reveal" the surface. */
+  .art__light {
+    position: absolute;
+    inset: -20% -60%;
+    background: linear-gradient(
+      100deg,
+      transparent 38%,
+      rgb(255 241 222 / 0.1) 46%,
+      rgb(255 241 222 / 0.22) 50%,
+      rgb(255 241 222 / 0.1) 54%,
+      transparent 62%
+    );
+    transform: translate3d(-35%, 0, 0);
+    pointer-events: none;
+    mix-blend-mode: soft-light;
+  }
+</style>

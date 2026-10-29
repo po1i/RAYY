@@ -1,0 +1,616 @@
+---
+import Icon from './Icon.astro';
+import { treatments, concerns, downtimes, groups } from '../data/site';
+import { href } from '../data/helpers';
+
+let n = 0;
+const grouped = groups.map((g) => ({ group: g, items: treatments.filter((t) => t.group === g).map((t) => ({ ...t, n: ++n })) }));
+---
+
+<section class="section tx" id="treatments" aria-labelledby="tx-title" data-finder>
+  <div class="wrap">
+    <header class="tx__head">
+      <p class="eyebrow">Treatments & pricing</p>
+      <h2 id="tx-title" class="display lines" data-reveal>
+        <span class="line"><span>Start with what bothers you.</span></span>
+        <span class="line"><span><em>We’ll match the treatment.</em></span></span>
+      </h2>
+      <p class="lede" data-reveal style="--i:2">
+        No need to know Botox from biostimulators. Tap what you’d like to change and how much downtime you can take.
+      </p>
+    </header>
+
+    <div class="finder" role="group" aria-label="Treatment finder" data-reveal style="--i:3">
+      <fieldset class="finder__set">
+        <legend class="finder__legend mono">01 · What would you like to improve?</legend>
+        <div class="chips">
+          {
+            concerns.map((c) => (
+              <button type="button" class="chip" aria-pressed="false" data-concern={c.id}>
+                <span class="chip__tick" aria-hidden="true">
+                  <Icon name="check" />
+                </span>
+                <span class="chip__label">{c.label}</span>
+                <span class="chip__hint">{c.hint}</span>
+              </button>
+            ))
+          }
+        </div>
+      </fieldset>
+
+      <fieldset class="finder__set">
+        <legend class="finder__legend mono">02 · Downtime you can take</legend>
+        <div class="seg">
+          <label class="seg__opt">
+            <input type="radio" name="downtime" value="any" checked />
+            <span>Any</span>
+          </label>
+          {
+            downtimes.map((d) => (
+              <label class="seg__opt">
+                <input type="radio" name="downtime" value={d.id} />
+                <span>{d.label}</span>
+              </label>
+            ))
+          }
+        </div>
+      </fieldset>
+
+      <div class="finder__result" aria-live="polite" data-result>
+        <p data-result-text>
+          Showing all {treatments.length} treatments. <span class="muted">Pick a concern to narrow it down.</span>
+        </p>
+        <div class="finder__result-actions" data-result-actions hidden>
+          <a class="btn" href="#book" data-ask>Ask about these <Icon name="arrow" class="arrow" /></a>
+          <button type="button" class="link mono" data-clear>Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-list">
+      {
+        grouped.map(({ group, items }) => (
+          <div class="grp" data-group>
+            <h3 class="grp__title eyebrow">{group}</h3>
+            <ol role="list">
+              {items.map((t) => (
+                <li
+                  class="row"
+                  id={`row-${t.slug}`}
+                  data-row
+                  data-name={t.name}
+                  data-concerns={t.concerns.join(' ')}
+                  data-downtime={t.downtime}
+                >
+                  <span class="row__n mono" aria-hidden="true">
+                    {String(t.n).padStart(2, '0')}
+                  </span>
+                  <div class="row__main">
+                    <h4 class="row__name">
+                      <a href={href(`/${t.slug}/`)} class="row__link">
+                        {t.name}
+                      </a>
+                      <span class="row__match mono" aria-hidden="true">
+                        Match
+                      </span>
+                    </h4>
+                    <p class="row__short">{t.short}</p>
+                  </div>
+                  <dl class="row__spec mono">
+                    <div>
+                      <dt>Time</dt>
+                      <dd>{t.duration}</dd>
+                    </div>
+                    <div>
+                      <dt>Downtime</dt>
+                      <dd>{t.downtimeLabel}</dd>
+                    </div>
+                    <div>
+                      <dt>Lasts</dt>
+                      <dd>{t.lasts}</dd>
+                    </div>
+                  </dl>
+                  <p class="row__price mono" data-placeholder={t.pricePlaceholder || undefined}>
+                    {t.price}
+                  </p>
+                  <span class="row__go" aria-hidden="true">
+                    <Icon name="arrow" />
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))
+      }
+    </div>
+
+    <p class="tx__note muted">
+      Prices are starting points; your exact plan and price are confirmed at your free consultation, before anything is
+      done. CareCredit financing available.
+    </p>
+  </div>
+</section>
+
+<style>
+  .tx__head {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--s-5) var(--s-6);
+    align-items: end;
+    margin-bottom: var(--s-8);
+  }
+
+  .tx__head .eyebrow {
+    grid-column: 1 / -1;
+  }
+
+  .tx__head h2 {
+    grid-column: 1 / span 8;
+  }
+
+  .tx__head .lede {
+    grid-column: 9 / -1;
+  }
+
+  /* ── Finder ── */
+  .finder {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+    gap: var(--s-6) var(--s-7);
+    padding: var(--s-6);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: linear-gradient(180deg, var(--ink-2), var(--ink));
+    margin-bottom: var(--s-8);
+  }
+
+  .finder__set {
+    border: 0;
+    padding: 0;
+    min-width: 0;
+  }
+
+  .finder__legend {
+    padding: 0;
+    margin-bottom: var(--s-4);
+    font-size: var(--t-xs);
+    letter-spacing: 0.06em;
+    color: var(--taupe);
+    text-transform: uppercase;
+  }
+
+  .chips {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-2);
+  }
+
+  .chip {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 2px var(--s-3);
+    padding: var(--s-3) var(--s-4);
+    min-height: 3.5rem;
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 1px var(--line);
+    text-align: left;
+    transition:
+      box-shadow var(--dur-1) var(--ease-out),
+      background-color var(--dur-1) var(--ease-out),
+      transform var(--dur-1) var(--ease-out);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .chip:hover {
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+  }
+
+  .chip:active {
+    transform: scale(0.98);
+  }
+
+  .chip[aria-pressed='true'] {
+    background: rgb(201 171 126 / 0.1);
+    box-shadow: inset 0 0 0 1px var(--brass);
+  }
+
+  .chip__tick {
+    grid-row: span 2;
+    display: grid;
+    place-items: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+    transition:
+      background-color var(--dur-1) var(--ease-out),
+      box-shadow var(--dur-1) var(--ease-out);
+  }
+
+  .chip__tick :global(svg) {
+    width: 0.8rem;
+    height: 0.8rem;
+    color: var(--brass-ink);
+    stroke-width: 2.25;
+    transform: scale(0);
+    transition: transform var(--dur-2) var(--ease-out);
+  }
+
+  .chip[aria-pressed='true'] .chip__tick {
+    background: var(--brass);
+    box-shadow: none;
+  }
+
+  .chip[aria-pressed='true'] .chip__tick :global(svg) {
+    transform: scale(1);
+  }
+
+  .chip__label {
+    font-size: var(--t-sm);
+    font-weight: 500;
+  }
+
+  .chip__hint {
+    font-size: var(--t-xs);
+    color: var(--taupe);
+    line-height: 1.35;
+  }
+
+  .seg {
+    display: grid;
+    gap: var(--s-2);
+  }
+
+  .seg__opt {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .seg__opt input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    cursor: pointer;
+  }
+
+  .seg__opt span {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: 2.75rem;
+    padding-inline: var(--s-4);
+    border-radius: 4px;
+    font-size: var(--t-sm);
+    box-shadow: inset 0 0 0 1px var(--line);
+    transition:
+      box-shadow var(--dur-1) var(--ease-out),
+      background-color var(--dur-1) var(--ease-out);
+  }
+
+  .seg__opt span::before {
+    content: '';
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+    transition:
+      box-shadow var(--dur-1) var(--ease-out),
+      background-color var(--dur-1) var(--ease-out);
+  }
+
+  .seg__opt:hover span {
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+  }
+
+  .seg__opt input:checked + span {
+    background: rgb(201 171 126 / 0.1);
+    box-shadow: inset 0 0 0 1px var(--brass);
+  }
+
+  .seg__opt input:checked + span::before {
+    background: var(--brass);
+    box-shadow: none;
+  }
+
+  .seg__opt input:focus-visible + span {
+    outline: 2px solid var(--brass-hi);
+    outline-offset: 3px;
+  }
+
+  .finder__result {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--line);
+    font-size: var(--t-sm);
+  }
+
+  .finder__result :global(a.jump) {
+    color: var(--brass);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .finder__result-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--s-5);
+  }
+
+  .finder__result-actions[hidden] {
+    display: none;
+  }
+
+  .finder__result-actions .link {
+    font-size: var(--t-xs);
+    color: var(--bone-2);
+  }
+
+  /* ── List ── */
+  .grp + .grp {
+    margin-top: var(--s-8);
+  }
+
+  .grp__title {
+    margin-bottom: var(--s-4);
+    transition: opacity var(--dur-2) var(--ease-out);
+  }
+
+  .row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1.4fr) minmax(0, 1.25fr) 10rem 2rem;
+    gap: var(--s-5);
+    align-items: center;
+    padding-block: var(--s-5);
+    border-top: 1px solid var(--line);
+    transition: opacity var(--dur-2) var(--ease-out);
+  }
+
+  .grp ol .row:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  /* Hover wash grows from the left; transform only. */
+  .row::before {
+    content: '';
+    position: absolute;
+    inset: 0 calc(var(--gutter) * -0.5);
+    background: rgb(236 229 216 / 0.035);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-3) var(--ease-out);
+    pointer-events: none;
+  }
+
+  .row:hover::before,
+  .row:focus-within::before {
+    transform: scaleX(1);
+  }
+
+  .row__n {
+    color: var(--taupe);
+    font-size: var(--t-xs);
+  }
+
+  .row__name {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    font-family: var(--serif);
+    font-size: var(--t-xl);
+    line-height: 1.1;
+  }
+
+  /* The whole row is the link target. */
+  .row__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .row__link:focus-visible {
+    outline: none;
+  }
+
+  .row:has(.row__link:focus-visible) {
+    outline: 2px solid var(--brass-hi);
+    outline-offset: 2px;
+  }
+
+  .row__match {
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 6px;
+    border-radius: 2px;
+    background: var(--brass);
+    color: var(--brass-ink);
+    opacity: 0;
+    transform: translateY(4px);
+    transition:
+      opacity var(--dur-2) var(--ease-out),
+      transform var(--dur-2) var(--ease-out);
+  }
+
+  .row__short {
+    margin-top: var(--s-1);
+    font-size: var(--t-sm);
+    color: var(--bone-2);
+  }
+
+  .row__spec {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-5);
+    font-size: var(--t-xs);
+  }
+
+  .row__spec dt {
+    color: var(--taupe);
+    margin-bottom: 2px;
+  }
+
+  .row__price {
+    text-align: right;
+    font-size: var(--t-sm);
+    color: var(--brass);
+  }
+
+  .row__go {
+    justify-self: end;
+    color: var(--taupe);
+    transition:
+      transform var(--dur-2) var(--ease-out),
+      color var(--dur-2) var(--ease-out);
+  }
+
+  .row__go :global(svg) {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .row:hover .row__go {
+    transform: translateX(4px);
+    color: var(--bone);
+  }
+
+  /* Filter states */
+  [data-filtering] .row:not([data-match]) {
+    opacity: 0.4;
+  }
+
+  [data-filtering] .row[data-match] .row__match {
+    opacity: 1;
+    transform: none;
+  }
+
+  [data-filtering] .grp:not(:has([data-match])) .grp__title {
+    opacity: 0.35;
+  }
+
+  .tx__note {
+    margin-top: var(--s-6);
+    font-size: var(--t-sm);
+    max-width: 60ch;
+  }
+
+  @media (max-width: 71.99rem) {
+    .row {
+      grid-template-columns: 2.25rem minmax(0, 1fr) auto 1.5rem;
+      grid-template-areas:
+        'n main price go'
+        'n spec spec go';
+      row-gap: var(--s-3);
+    }
+
+    .row__n {
+      grid-area: n;
+      align-self: start;
+      padding-top: 0.6em;
+    }
+
+    .row__main {
+      grid-area: main;
+    }
+
+    .row__spec {
+      grid-area: spec;
+    }
+
+    .row__price {
+      grid-area: price;
+      align-self: start;
+      padding-top: 0.5em;
+    }
+
+    .row__go {
+      grid-area: go;
+    }
+  }
+
+  @media (max-width: 59.99rem) {
+    .tx__head {
+      grid-template-columns: 1fr;
+    }
+
+    .tx__head h2,
+    .tx__head .lede {
+      grid-column: 1 / -1;
+    }
+
+    .finder {
+      grid-template-columns: 1fr;
+      padding: var(--s-5);
+    }
+
+    .chips {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .seg {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .row {
+      grid-template-columns: minmax(0, 1fr) 1.25rem;
+      grid-template-areas:
+        'main go'
+        'price go'
+        'spec spec';
+    }
+
+    .row__n {
+      display: none;
+    }
+
+    .row__price {
+      text-align: left;
+      padding-top: 0;
+    }
+
+    .row__spec {
+      gap: var(--s-4);
+    }
+
+    .chip {
+      grid-template-columns: auto 1fr;
+      padding: var(--s-3);
+    }
+
+    .chip__hint {
+      display: none;
+    }
+
+    .finder__result-actions {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+
+  @media (max-width: 22rem) {
+    .chips,
+    .seg {
+      grid-template-columns: 1fr;
+    }
+
+    .row__spec {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>
+
+<script>
+  import { initFinder } from '../scripts/finder';
+  initFinder();
+</script>

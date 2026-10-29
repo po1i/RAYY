@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { treatments } from '../data/site';
+import { business } from '../data/business';
+import { href, telHref } from '../data/helpers';
+---
+
+<Base title={`Page not found · ${business.name}`} description="This page has moved. Find your treatment or call us.">
+  <section class="nf wrap">
+    <p class="eyebrow">404</p>
+    <h1 class="display">This page has <em>moved.</em></h1>
+    <p class="lede">We’ve rebuilt our site. Everything is still here, just easier to find.</p>
+    <div class="nf__actions">
+      <a class="btn btn--lg" href={href('/#treatments')}>See all treatments <Icon name="arrow" class="arrow" /></a>
+      <a class="btn btn--lg btn--ghost" href={telHref}><Icon name="phone" /> {business.phone}</a>
+    </div>
+    <ul role="list" class="nf__list">
+      {treatments.map((t) => <li><a class="link" href={href(`/${t.slug}/`)}>{t.name}</a></li>)}
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    min-height: 80svh;
+    padding-top: calc(var(--header-h) + var(--s-9));
+    padding-bottom: var(--s-9);
+  }
+
+  .nf h1 {
+    font-size: var(--t-3xl);
+    margin-block: var(--s-5);
+  }
+
+  .nf__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    margin-block: var(--s-7);
+  }
+
+  .nf__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3) var(--s-6);
+    color: var(--bone-2);
+    font-size: var(--t-sm);
+  }
+</style>

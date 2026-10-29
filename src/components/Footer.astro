@@ -1,0 +1,156 @@
+---
+import Icon from './Icon.astro';
+import { business, treatments } from '../data/site';
+import { href, telHref, hoursRows, address } from '../data/helpers';
+const year = new Date().getFullYear();
+---
+
+<footer class="ftr">
+  <div class="wrap">
+    <div class="ftr__sign">
+      <p class="display">Look like yourself, <em>rested.</em></p>
+      <a class="btn btn--lg" href={telHref} data-magnetic>
+        <Icon name="phone" /> Call {business.phone}
+      </a>
+    </div>
+
+    <div class="ftr__grid">
+      <div>
+        <h2 class="eyebrow">Visit</h2>
+        <address>
+          {business.street}<br />
+          {business.neighborhood}, {business.region}
+          {business.zip}
+        </address>
+        <a class="link" href={business.mapsUrl} target="_blank" rel="noopener">
+          Get directions <span class="sr-only">(opens Google Maps)</span>
+          <Icon name="arrow" class="ic" />
+        </a>
+      </div>
+
+      <div>
+        <h2 class="eyebrow">Hours</h2>
+        <dl class="ftr__hours">
+          {
+            hoursRows().map((r) => (
+              <div>
+                <dt>{r.days}</dt>
+                <dd class="mono">{r.time}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+
+      <div>
+        <h2 class="eyebrow">Contact</h2>
+        <ul role="list">
+          <li><a class="link" href={telHref}>{business.phone}</a></li>
+          <li><a class="link" href={`mailto:${business.email}`}>{business.email}</a></li>
+          <li>
+            <a class="link" href={business.instagram} target="_blank" rel="noopener">
+              Instagram <span class="sr-only">(opens in a new tab)</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="eyebrow">Treatments</h2>
+        <ul role="list" class="ftr__tx">
+          {treatments.map((t) => <li><a class="link" href={href(`/${t.slug}/`)}>{t.name}</a></li>)}
+        </ul>
+      </div>
+    </div>
+
+    <div class="ftr__base">
+      <p>© {year} {business.name}. {address}.</p>
+      <p>
+        <a class="link" href={business.careCreditUrl} target="_blank" rel="noopener">CareCredit financing</a>
+        <span aria-hidden="true">·</span>
+        <a class="link" href={business.giftCardsUrl} target="_blank" rel="noopener">Gift cards</a>
+      </p>
+      <p class="ftr__legal">
+        Individual results vary. All treatments follow a consultation with a licensed provider. This site is not
+        medical advice.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ftr {
+    padding-block: var(--section) var(--s-7);
+    border-top: 1px solid var(--line);
+    background: var(--ink);
+  }
+
+  .ftr__sign {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--s-6);
+    padding-bottom: var(--s-9);
+  }
+
+  .ftr__sign .display {
+    font-size: var(--t-3xl);
+    max-width: 10ch;
+  }
+
+  .ftr__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+    gap: var(--s-7) var(--s-6);
+    padding-block: var(--s-7);
+    border-top: 1px solid var(--line);
+    font-size: var(--t-sm);
+    color: var(--bone-2);
+  }
+
+  .ftr__grid h2 {
+    margin-bottom: var(--s-4);
+  }
+
+  .ftr__grid address {
+    font-style: normal;
+    margin-bottom: var(--s-3);
+    color: var(--bone);
+  }
+
+  .ftr__grid ul {
+    display: grid;
+    gap: var(--s-2);
+  }
+
+  .ftr__hours div {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-4);
+    padding-block: var(--s-1);
+  }
+
+  .ftr__hours dt {
+    color: var(--bone);
+  }
+
+  .ftr__base {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--s-3) var(--s-6);
+    padding-top: var(--s-6);
+    border-top: 1px solid var(--line);
+    font-size: var(--t-xs);
+    color: var(--taupe);
+  }
+
+  .ftr__base p:last-child {
+    flex-basis: 100%;
+  }
+
+  .ftr__base span {
+    margin-inline: var(--s-2);
+  }
+</style>
