@@ -30,7 +30,6 @@ const { src, alt = '', variant = 'warm', ratio = '4 / 5', class: className, eage
     ) : (
       <div class="art__paint" aria-hidden="true">
         <span class="art__form" />
-        <span class="art__rim" />
       </div>
     )
   }
@@ -40,30 +39,35 @@ const { src, alt = '', variant = 'warm', ratio = '4 / 5', class: className, eage
 
 <style>
   .art {
-    --tone-a: #e9d2b8;
-    --tone-b: #b98e6c;
-    --tone-c: #5e4130;
-    --bg-a: #33271e;
+    --wall-a: #ddd4c7;
+    --wall-b: #c9bfb1;
+    --tone-a: #f4e6d6;
+    --tone-b: #dcbfa4;
+    --tone-c: #b48d70;
+    --tone-d: #7d5c46;
     position: relative;
     aspect-ratio: var(--ratio);
     overflow: hidden;
-    border-radius: var(--radius);
-    background: var(--ink-2);
+    background: var(--wall-b);
     isolation: isolate;
   }
 
   .art--cool {
-    --tone-a: #d9d3c8;
-    --tone-b: #8f877b;
-    --tone-c: #3d3933;
-    --bg-a: #24221e;
+    --wall-a: #d6d2ca;
+    --wall-b: #bdb8ae;
+    --tone-a: #f1eee8;
+    --tone-b: #d5d0c6;
+    --tone-c: #a8a196;
+    --tone-d: #6f6a61;
   }
 
   .art--deep {
-    --tone-a: #c79c76;
-    --tone-b: #7a543b;
-    --tone-c: #33221a;
-    --bg-a: #2a1f18;
+    --wall-a: #d3c6b5;
+    --wall-b: #b8a891;
+    --tone-a: #e2c3a3;
+    --tone-b: #b98d68;
+    --tone-c: #855d42;
+    --tone-d: #4f3526;
   }
 
   .art img {
@@ -74,41 +78,35 @@ const { src, alt = '', variant = 'warm', ratio = '4 / 5', class: className, eage
     object-fit: cover;
   }
 
+  /* Plaster wall lit from the upper left. */
   .art__paint {
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(120% 80% at 75% 10%, var(--bg-a) 0%, transparent 60%),
-      radial-gradient(90% 60% at 20% 100%, #1b1713 0%, transparent 70%),
-      var(--ink-2);
+      radial-gradient(90% 70% at 18% 8%, var(--wall-a) 0%, transparent 70%),
+      linear-gradient(160deg, var(--wall-a), var(--wall-b));
   }
 
   /* Cropped hard so only the curve shows: a macro of a lit surface, like a
      shoulder or cheekbone, rather than an object sitting in the frame. */
-  .art__form,
-  .art__rim {
+  .art__form {
     position: absolute;
-    left: 14%;
-    top: 20%;
+    left: 16%;
+    top: 22%;
     width: 150%;
     aspect-ratio: 0.82;
     border-radius: 50%;
     transform: rotate(-22deg);
-  }
-
-  .art__form {
     background: radial-gradient(
-      circle at 22% 22%,
+      circle at 20% 20%,
       var(--tone-a) 0%,
-      var(--tone-b) 18%,
-      var(--tone-c) 40%,
-      #17110d 62%
+      var(--tone-b) 20%,
+      var(--tone-c) 44%,
+      var(--tone-d) 70%
     );
-    box-shadow: -30px -20px 120px rgb(0 0 0 / 0.5);
-  }
-
-  .art__rim {
-    box-shadow: inset 10px 8px 26px rgb(255 236 214 / 0.22);
+    box-shadow:
+      -40px -10px 90px rgb(72 54 40 / 0.28),
+      inset 14px 10px 30px rgb(255 248 238 / 0.35);
   }
 
   /* Raking light; parents translate it to "reveal" the surface. */
@@ -118,13 +116,12 @@ const { src, alt = '', variant = 'warm', ratio = '4 / 5', class: className, eage
     background: linear-gradient(
       100deg,
       transparent 38%,
-      rgb(255 241 222 / 0.1) 46%,
-      rgb(255 241 222 / 0.22) 50%,
-      rgb(255 241 222 / 0.1) 54%,
+      rgb(255 250 242 / 0.14) 46%,
+      rgb(255 250 242 / 0.3) 50%,
+      rgb(255 250 242 / 0.14) 54%,
       transparent 62%
     );
     transform: translate3d(-35%, 0, 0);
     pointer-events: none;
-    mix-blend-mode: soft-light;
   }
 </style>

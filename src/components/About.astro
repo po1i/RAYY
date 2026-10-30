@@ -10,7 +10,7 @@ const creds = [
 ];
 ---
 
-<section class="section paper about" id="about" aria-labelledby="about-title">
+<section class="section alt about" id="about" aria-labelledby="about-title">
   <div class="wrap about__grid">
     <div class="about__media" data-reveal>
       <Art variant="cool" ratio="4 / 5" sizes="(min-width: 60rem) 40vw, 100vw" />
@@ -77,7 +77,9 @@ const creds = [
   }
 
   .about__name {
-    font-family: var(--serif);
+    font-family: var(--display);
+    font-weight: 300;
+    letter-spacing: -0.03em;
     font-size: var(--t-xl);
     line-height: 1.1;
     display: flex;
@@ -88,7 +90,7 @@ const creds = [
 
   .about__name .mono {
     font-size: var(--t-xs);
-    color: var(--paper-muted);
+    color: var(--text-2);
     letter-spacing: 0.04em;
   }
 
@@ -103,20 +105,22 @@ const creds = [
     gap: var(--s-5);
     margin-block: var(--s-7);
     padding-top: var(--s-5);
-    border-top: 1px solid var(--paper-line);
+    border-top: 1px solid var(--line);
   }
 
   .about__creds dt {
-    font-family: var(--serif);
+    font-family: var(--display);
+    font-weight: 300;
+    letter-spacing: -0.03em;
     font-size: var(--t-xl);
-    color: var(--paper-accent);
+    color: var(--accent);
     line-height: 1;
   }
 
   .about__creds dd {
     margin-top: var(--s-2);
     font-size: var(--t-xs);
-    color: var(--paper-muted);
+    color: var(--text-2);
   }
 
   .about__team ul {
@@ -130,12 +134,12 @@ const creds = [
     justify-content: space-between;
     gap: var(--s-4);
     padding-block: var(--s-3);
-    border-bottom: 1px solid var(--paper-line);
+    border-bottom: 1px solid var(--line);
   }
 
   .about__team .mono {
     font-size: var(--t-xs);
-    color: var(--paper-muted);
+    color: var(--text-2);
   }
 
   @media (max-width: 59.99rem) {

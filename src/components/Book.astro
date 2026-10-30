@@ -10,7 +10,7 @@ const { topic } = Astro.props;
 const times = ['Morning', 'Afternoon', 'Evening', 'Anytime'];
 ---
 
-<section class="section paper book" id="book" aria-labelledby="book-title">
+<section class="section alt book" id="book" aria-labelledby="book-title">
   <div class="wrap book__grid">
     <div class="book__call">
       <p class="eyebrow">Book a free consultation</p>
@@ -120,7 +120,7 @@ const times = ['Morning', 'Afternoon', 'Evening', 'Anytime'];
           <input id="cb-company" name="company" type="text" tabindex="-1" autocomplete="off" />
         </div>
 
-        <button class="btn btn--lg cb__submit" type="submit" data-magnetic>
+        <button class="btn btn--lg cb__submit" type="submit">
           <span class="cb__label">Call me back</span>
           <span class="cb__spinner" aria-hidden="true"></span>
           <Icon name="arrow" class="arrow" />
@@ -158,7 +158,9 @@ const times = ['Morning', 'Afternoon', 'Evening', 'Anytime'];
     display: inline-flex;
     align-items: center;
     gap: var(--s-4);
-    font-family: var(--serif);
+    font-family: var(--display);
+    font-weight: 300;
+    letter-spacing: -0.03em;
     font-size: clamp(2.5rem, 1.5rem + 4.4vw, 5.25rem);
     line-height: 1;
     letter-spacing: -0.01em;
@@ -169,7 +171,7 @@ const times = ['Morning', 'Afternoon', 'Evening', 'Anytime'];
   .book__phone :global(.book__phone-arrow) {
     width: 0.5em;
     height: 0.5em;
-    color: var(--paper-accent);
+    color: var(--accent);
     transition: transform var(--dur-2) var(--ease-out);
   }
 
@@ -182,16 +184,12 @@ const times = ['Morning', 'Afternoon', 'Evening', 'Anytime'];
     align-items: baseline;
     gap: var(--s-3);
     margin-top: var(--s-4);
-    color: var(--paper-muted);
+    color: var(--text-2);
     max-width: 44ch;
   }
 
   .book__hint .status-dot {
     transform: translateY(-0.1em);
-  }
-
-  .paper [data-open='true'] .status-dot {
-    background: #3f8a4a;
   }
 
   .book__alt {
@@ -207,7 +205,7 @@ const times = ['Morning', 'Afternoon', 'Evening', 'Anytime'];
     gap: var(--s-6);
     margin-top: var(--s-8);
     padding-top: var(--s-6);
-    border-top: 1px solid var(--paper-line);
+    border-top: 1px solid var(--line);
     font-size: var(--t-sm);
   }
 
@@ -220,18 +218,18 @@ const times = ['Morning', 'Afternoon', 'Evening', 'Anytime'];
     justify-content: space-between;
     gap: var(--s-4);
     padding-block: 2px;
-    color: var(--paper-muted);
+    color: var(--text-2);
   }
 
   .book__hours div[data-today] {
-    color: var(--paper-ink);
+    color: var(--text);
     font-weight: 500;
   }
 
   .book__hours div[data-today] dt::after {
     content: ' · today';
     font-weight: 400;
-    color: var(--paper-accent);
+    color: var(--accent);
   }
 
   /* ── Call-back form ── */
@@ -245,38 +243,26 @@ const times = ['Morning', 'Afternoon', 'Evening', 'Anytime'];
     display: grid;
     gap: var(--s-5);
     padding: var(--s-6);
-    border-radius: 4px;
-    background: var(--ink);
-    color: var(--bone);
-    color-scheme: dark;
-    box-shadow: 0 30px 80px -30px rgb(14 13 11 / 0.55);
+    background: var(--surface);
+    box-shadow:
+      0 0 0 1px var(--line),
+      0 40px 80px -48px rgb(29 29 27 / 0.45);
   }
 
   .cb[hidden] {
     display: none;
   }
 
-  /* The form card is dark inside a light section: restore dark-theme buttons. */
-  .cb .btn.cb__submit {
-    --btn-bg: var(--brass);
-    --btn-fg: var(--brass-ink);
-    --btn-hover: var(--bone);
-  }
-
-  .cb .btn.btn--ghost {
-    --btn-fg: var(--bone);
-    --btn-hover: rgb(236 229 216 / 0.08);
-    box-shadow: inset 0 0 0 1px var(--line-strong);
-  }
-
   .cb__head .mono {
     margin-top: var(--s-2);
     font-size: var(--t-xs);
-    color: var(--taupe);
+    color: var(--text-3);
   }
 
   .cb__title {
-    font-family: var(--serif);
+    font-family: var(--display);
+    font-weight: 300;
+    letter-spacing: -0.03em;
     font-size: var(--t-xl);
     line-height: 1.1;
   }
@@ -292,14 +278,14 @@ const times = ['Morning', 'Afternoon', 'Evening', 'Anytime'];
   .field label,
   .field legend {
     font-size: var(--t-sm);
-    color: var(--bone-2);
+    color: var(--text-2);
     padding: 0;
   }
 
   .opt {
     font-family: var(--mono);
     font-size: 0.6875rem;
-    color: var(--taupe);
+    color: var(--text-3);
     margin-left: var(--s-2);
   }
 
@@ -310,8 +296,7 @@ const times = ['Morning', 'Afternoon', 'Evening', 'Anytime'];
     min-height: 3.25rem;
     padding: 0 var(--s-4);
     border: 0;
-    border-radius: 4px;
-    background: var(--ink-3);
+    background: var(--field);
     box-shadow: inset 0 0 0 1px var(--line);
     font-size: 1rem; /* 16px stops iOS zooming on focus */
     transition: box-shadow var(--dur-1) var(--ease-out);
@@ -326,7 +311,7 @@ const times = ['Morning', 'Afternoon', 'Evening', 'Anytime'];
   .field input:focus-visible,
   .field select:focus-visible {
     outline: none;
-    box-shadow: inset 0 0 0 1px var(--brass);
+    box-shadow: inset 0 0 0 1px var(--accent);
   }
 
   .field input[aria-invalid='true'] {
@@ -354,8 +339,8 @@ const times = ['Morning', 'Afternoon', 'Evening', 'Anytime'];
     top: 50%;
     width: 0.5rem;
     height: 0.5rem;
-    border-right: 1.5px solid var(--bone-2);
-    border-bottom: 1.5px solid var(--bone-2);
+    border-right: 1.5px solid var(--text-2);
+    border-bottom: 1.5px solid var(--text-2);
     transform: translateY(-70%) rotate(45deg);
     pointer-events: none;
   }
@@ -387,9 +372,8 @@ const times = ['Morning', 'Afternoon', 'Evening', 'Anytime'];
     display: grid;
     place-items: center;
     min-height: 2.75rem;
-    border-radius: 4px;
     font-size: var(--t-xs);
-    color: var(--bone);
+    color: var(--text);
     box-shadow: inset 0 0 0 1px var(--line);
     transition:
       box-shadow var(--dur-1) var(--ease-out),
@@ -401,12 +385,12 @@ const times = ['Morning', 'Afternoon', 'Evening', 'Anytime'];
   }
 
   .times input:checked + span {
-    background: rgb(201 171 126 / 0.12);
-    box-shadow: inset 0 0 0 1px var(--brass);
+    background: var(--tint);
+    box-shadow: inset 0 0 0 1px var(--accent);
   }
 
   .times input:focus-visible + span {
-    outline: 2px solid var(--brass-hi);
+    outline: 2px solid var(--accent-2);
     outline-offset: 2px;
   }
 
@@ -448,7 +432,7 @@ const times = ['Morning', 'Afternoon', 'Evening', 'Anytime'];
 
   .cb__status {
     font-size: var(--t-sm);
-    color: var(--bone-2);
+    color: var(--text-2);
   }
 
   .cb__status:empty {
@@ -460,7 +444,7 @@ const times = ['Morning', 'Afternoon', 'Evening', 'Anytime'];
   }
 
   .cb__status :global(a) {
-    color: var(--brass-hi);
+    color: var(--accent-2);
     text-decoration: underline;
     text-underline-offset: 3px;
   }
@@ -479,9 +463,9 @@ const times = ['Morning', 'Afternoon', 'Evening', 'Anytime'];
     place-items: center;
     width: 3rem;
     height: 3rem;
-    border-radius: 50%;
-    background: var(--brass);
-    color: var(--brass-ink);
+    border-radius: 0;
+    background: var(--accent);
+    color: var(--on-accent);
   }
 
   .cb__check :global(svg) {

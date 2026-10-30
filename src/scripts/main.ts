@@ -75,27 +75,6 @@ const initReveals = () => {
   items.forEach((el) => io.observe(el));
 };
 
-/* ── Magnetic buttons: drift a few px toward the cursor ── */
-const initMagnetic = () => {
-  if (!finePointer.matches || reduced.matches) return;
-  document.querySelectorAll<HTMLElement>('[data-magnetic]').forEach((el) => {
-    let raf = 0;
-    el.addEventListener('pointermove', (e) => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const r = el.getBoundingClientRect();
-        const x = ((e.clientX - r.left) / r.width - 0.5) * 10;
-        const y = ((e.clientY - r.top) / r.height - 0.5) * 8;
-        el.style.translate = `${x.toFixed(1)}px ${y.toFixed(1)}px`;
-      });
-    });
-    el.addEventListener('pointerleave', () => {
-      cancelAnimationFrame(raf);
-      el.style.translate = '';
-    });
-  });
-};
-
 /* ── Smooth scrolling: desktop mouse/trackpad only; touch keeps native ── */
 const initSmooth = async () => {
   if (!finePointer.matches || reduced.matches) return;
@@ -112,7 +91,6 @@ const initSmooth = async () => {
 initHeader();
 initMenu();
 initReveals();
-initMagnetic();
 initHours();
 initTopic();
 initSmooth();

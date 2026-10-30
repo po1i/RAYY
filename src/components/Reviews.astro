@@ -62,7 +62,9 @@ const [lead, ...others] = reviews;
   }
 
   .rev__num {
-    font-family: var(--serif);
+    font-family: var(--display);
+    font-weight: 300;
+    letter-spacing: -0.03em;
     font-size: var(--t-2xl);
     line-height: 0.9;
   }
@@ -71,13 +73,13 @@ const [lead, ...others] = reviews;
     display: grid;
     gap: var(--s-1);
     font-size: var(--t-xs);
-    color: var(--bone-2);
+    color: var(--text-2);
   }
 
   .stars {
     display: inline-flex;
     gap: 1px;
-    color: var(--brass);
+    color: var(--accent);
   }
 
   .stars :global(svg) {
@@ -90,7 +92,9 @@ const [lead, ...others] = reviews;
   }
 
   .rev__lead p {
-    font-family: var(--serif);
+    font-family: var(--display);
+    font-weight: 300;
+    letter-spacing: -0.03em;
     font-size: var(--t-2xl);
     line-height: 1.08;
     letter-spacing: -0.01em;
@@ -101,7 +105,7 @@ const [lead, ...others] = reviews;
   figcaption {
     margin-top: var(--s-5);
     font-size: var(--t-xs);
-    color: var(--taupe);
+    color: var(--text-3);
   }
 
   .rev__more {
@@ -124,7 +128,7 @@ const [lead, ...others] = reviews;
   .rev__more p {
     font-size: var(--t-lg);
     line-height: 1.45;
-    color: var(--bone-2);
+    color: var(--text-2);
   }
 
   .rev__all {

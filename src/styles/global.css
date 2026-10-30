@@ -1,30 +1,29 @@
 /* ─── Tokens ─────────────────────────────────────────────────────────── */
+/*
+ * Limestone: light-first, one typeface, one accent.
+ * Sections re-theme by redefining these tokens (.alt, .dark), so component
+ * styles only ever reference the semantic names below.
+ */
 :root {
-  --ink: #0e0d0b;
-  --ink-2: #151412;
-  --ink-3: #1e1c19;
-  --bone: #ece5d8;
-  --bone-2: #b8afa0;
-  --taupe: #958c80;
-  --brass: #c9ab7e;
-  --brass-hi: #dcc39c;
-  --brass-ink: #17120a;
-  --line: rgb(236 229 216 / 0.12);
-  --line-strong: rgb(236 229 216 / 0.24);
-  --ok: #9fc9a0;
-  --warn: #e0a57c;
+  --bg: #eee9e1; /* limestone */
+  --bg-2: #e3dcd1; /* plaster */
+  --surface: #f6f3ee; /* chalk: raised cards */
+  --field: #fbf9f6;
+  --text: #1d1d1b; /* graphite */
+  --text-2: #4f4c46;
+  --text-3: #615d56;
+  --accent: #3e4a3a; /* deep olive */
+  --accent-2: #56654f;
+  --on-accent: #f6f3ee;
+  --line: rgb(29 29 27 / 0.14);
+  --line-strong: rgb(29 29 27 / 0.32);
+  --tint: rgb(62 74 58 / 0.08);
+  --ok: #2f7a3f;
+  --warn: #a3402b;
 
-  /* Light "bone" sections invert the palette for pacing. */
-  --paper: #ece5d8;
-  --paper-2: #e2d9c9;
-  --paper-ink: #0e0d0b;
-  --paper-muted: #4b453d;
-  --paper-accent: #7a5d32;
-  --paper-line: rgb(14 13 11 / 0.14);
-
-  --serif: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif;
-  --sans: 'Geist', 'Geist Fallback', ui-sans-serif, system-ui, sans-serif;
-  --mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --display: 'Hanken Grotesk', 'Hanken Fallback', ui-sans-serif, system-ui, sans-serif;
+  --sans: var(--display);
+  --mono: var(--display);
 
   /* 4px base spacing scale */
   --s-1: 0.25rem;
@@ -40,15 +39,15 @@
   --s-11: 12rem;
   --section: clamp(var(--s-9), 6vw + 3rem, var(--s-11));
   --gutter: clamp(1rem, 4vw, 3rem);
-  --max: 88rem;
+  --max: 90rem;
 
   --t-xs: 0.75rem;
   --t-sm: 0.875rem;
   --t-base: clamp(1rem, 0.96rem + 0.18vw, 1.0625rem);
   --t-lg: clamp(1.125rem, 1.02rem + 0.45vw, 1.375rem);
-  --t-xl: clamp(1.5rem, 1.15rem + 1.5vw, 2.25rem);
-  --t-2xl: clamp(2.25rem, 1.4rem + 3.6vw, 4.75rem);
-  --t-3xl: clamp(2.875rem, 1rem + 6.6vw, 8rem);
+  --t-xl: clamp(1.5rem, 1.2rem + 1.3vw, 2.25rem);
+  --t-2xl: clamp(2.25rem, 1.3rem + 4vw, 5rem);
+  --t-3xl: clamp(2.75rem, 0.9rem + 7.4vw, 8.75rem);
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
@@ -56,18 +55,50 @@
   --dur-2: 420ms;
   --dur-3: 900ms;
 
-  --radius: 2px;
-  --header-h: 4.25rem;
+  --radius: 0px;
+  --header-h: 4.5rem;
   --bar-h: 0px;
 
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 @media (max-width: 47.99rem) {
   :root {
     --header-h: 3.75rem;
-    --bar-h: 4.5rem;
+    --bar-h: 4.25rem;
   }
+}
+
+/* Plaster sections for pacing. */
+.alt {
+  --bg: #e3dcd1;
+  --surface: #eee9e1;
+  --field: #f6f3ee;
+}
+
+/* Graphite sections: same components, inverted tokens. */
+.dark {
+  --bg: #1d1d1b;
+  --surface: #262624;
+  --field: #2d2d2a;
+  --text: #eee9e1;
+  --text-2: #b3ada3;
+  --text-3: #8e897f;
+  --accent: #a9b89f; /* sage, legible on graphite */
+  --accent-2: #c3cfba;
+  --on-accent: #1d1d1b;
+  --line: rgb(238 233 225 / 0.14);
+  --line-strong: rgb(238 233 225 / 0.32);
+  --tint: rgb(169 184 159 / 0.1);
+  --ok: #8fc79a;
+  --warn: #e39a7d;
+  color-scheme: dark;
+}
+
+.alt,
+.dark {
+  background: var(--bg);
+  color: var(--text);
 }
 
 /* ─── Reset ──────────────────────────────────────────────────────────── */
@@ -85,7 +116,7 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   scroll-padding-top: calc(var(--header-h) + var(--s-5));
-  background: var(--ink);
+  background: var(--bg);
 }
 
 html:not(.lenis) {
@@ -94,12 +125,11 @@ html:not(.lenis) {
 
 body {
   min-height: 100svh;
-  background: var(--ink);
-  color: var(--bone);
+  background: var(--bg);
+  color: var(--text);
   font-family: var(--sans);
   font-size: var(--t-base);
   line-height: 1.6;
-  font-feature-settings: 'ss01', 'cv11';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -158,28 +188,23 @@ p {
 }
 
 ::selection {
-  background: var(--brass);
-  color: var(--brass-ink);
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 :focus-visible {
-  outline: 2px solid var(--brass-hi);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
-  border-radius: var(--radius);
 }
 
-.paper :focus-visible {
-  outline-color: var(--paper-accent);
-}
-
-/* Film grain: one fixed, composited layer, never repainted on scroll. */
+/* Limestone grain: one fixed, composited layer, never repainted on scroll. */
 body::after {
   content: '';
   position: fixed;
   inset: 0;
   z-index: 100;
   pointer-events: none;
-  opacity: 0.045;
+  opacity: 0.05;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
@@ -194,17 +219,6 @@ body::after {
 .section {
   padding-block: var(--section);
   position: relative;
-}
-
-.paper {
-  background: var(--paper);
-  color: var(--paper-ink);
-  color-scheme: light;
-}
-
-.paper ::selection {
-  background: var(--paper-ink);
-  color: var(--paper);
 }
 
 .sr-only {
@@ -225,8 +239,8 @@ body::after {
   left: var(--s-3);
   z-index: 200;
   padding: var(--s-3) var(--s-4);
-  background: var(--brass);
-  color: var(--brass-ink);
+  background: var(--accent);
+  color: var(--on-accent);
   font-weight: 500;
   transform: translateY(-200%);
   transition: transform var(--dur-1) var(--ease-out);
@@ -237,76 +251,66 @@ body::after {
 }
 
 /* ─── Type ───────────────────────────────────────────────────────────── */
+/* One family. Hierarchy comes from weight, size and tone, not from a second face. */
 .display {
-  font-family: var(--serif);
+  font-family: var(--display);
   font-size: var(--t-2xl);
-  letter-spacing: -0.015em;
-  line-height: 0.98;
+  font-weight: 300;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
 }
 
+/* The second voice of a headline is quieter, not decorative. */
 .display em,
 .serif-em {
-  font-style: italic;
-  color: var(--brass);
-}
-
-.paper .display em {
-  color: var(--paper-accent);
+  font-style: normal;
+  color: var(--text-3);
 }
 
 .eyebrow {
   display: inline-flex;
   align-items: center;
   gap: var(--s-3);
-  font-family: var(--mono);
-  font-size: var(--t-xs);
-  letter-spacing: 0.14em;
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--taupe);
-}
-
-.paper .eyebrow {
-  color: var(--paper-muted);
+  color: var(--text-2);
 }
 
 .eyebrow::before {
   content: '';
-  width: 1.5rem;
-  height: 1px;
-  background: currentColor;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
 }
 
 .lede {
   font-size: var(--t-lg);
   line-height: 1.5;
-  color: var(--bone-2);
+  color: var(--text-2);
   max-width: 36ch;
 }
 
-.paper .lede {
-  color: var(--paper-muted);
-}
-
+/* Data: same face, tabular figures, set a touch smaller. */
 .mono {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--t-sm);
-  letter-spacing: -0.01em;
   font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
 }
 
 .muted {
-  color: var(--bone-2);
-}
-
-.paper .muted {
-  color: var(--paper-muted);
+  color: var(--text-2);
 }
 
 /* ─── Buttons ────────────────────────────────────────────────────────── */
 .btn {
-  --btn-bg: var(--brass);
-  --btn-fg: var(--brass-ink);
-  --btn-hover: var(--bone);
+  --btn-bg: var(--accent);
+  --btn-fg: var(--on-accent);
+  --btn-hover: var(--text);
+  --btn-hover-fg: var(--bg);
   position: relative;
   isolation: isolate;
   display: inline-flex;
@@ -315,7 +319,7 @@ body::after {
   gap: var(--s-3);
   min-height: 3.25rem;
   padding: 0 var(--s-5);
-  border-radius: 999px;
+  border-radius: 0;
   background: var(--btn-bg);
   color: var(--btn-fg);
   font-size: var(--t-sm);
@@ -325,20 +329,19 @@ body::after {
   overflow: hidden;
   transition:
     transform var(--dur-2) var(--ease-out),
-    translate var(--dur-2) var(--ease-out),
     color var(--dur-2) var(--ease-out);
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Fill sweeps up from below on hover. Transform only. */
+/* Fill wipes in from the left on hover. Transform only. */
 .btn::before {
   content: '';
   position: absolute;
   inset: 0;
   z-index: -1;
   background: var(--btn-hover);
-  border-radius: inherit;
-  transform: translateY(101%);
+  transform: scaleX(0);
+  transform-origin: right;
   transition: transform var(--dur-2) var(--ease-out);
 }
 
@@ -347,8 +350,13 @@ body::after {
 }
 
 @media (hover: hover) {
+  .btn:hover {
+    color: var(--btn-hover-fg);
+  }
+
   .btn:hover::before {
-    transform: translateY(0);
+    transform: scaleX(1);
+    transform-origin: left;
   }
 
   .btn:hover .arrow {
@@ -357,7 +365,7 @@ body::after {
 }
 
 .btn:active {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 
 .btn[disabled],
@@ -368,21 +376,10 @@ body::after {
 
 .btn--ghost {
   --btn-bg: transparent;
-  --btn-fg: var(--bone);
-  --btn-hover: rgb(236 229 216 / 0.08);
+  --btn-fg: var(--text);
+  --btn-hover: var(--text);
+  --btn-hover-fg: var(--bg);
   box-shadow: inset 0 0 0 1px var(--line-strong);
-}
-
-.paper .btn--ghost {
-  --btn-fg: var(--paper-ink);
-  --btn-hover: rgb(14 13 11 / 0.06);
-  box-shadow: inset 0 0 0 1px var(--paper-line);
-}
-
-.paper .btn:not(.btn--ghost) {
-  --btn-bg: var(--paper-ink);
-  --btn-fg: var(--paper);
-  --btn-hover: var(--paper-accent);
 }
 
 .btn--lg {
@@ -397,7 +394,7 @@ body::after {
   flex: none;
 }
 
-/* Text link with an underline that draws in. */
+/* Text link with a quiet underline that sweeps to full strength. */
 .link {
   position: relative;
   display: inline-flex;
@@ -444,7 +441,7 @@ body::after {
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
-  background: var(--taupe);
+  background: var(--text-3);
   flex: none;
 }
 
@@ -492,8 +489,8 @@ body::after {
 .lines .line {
   display: block;
   overflow: clip;
-  padding-bottom: 0.08em;
-  margin-bottom: -0.08em;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
 }
 
 .lines .line > span {
@@ -517,17 +514,17 @@ body::after {
 
 /* ─── Placeholder review mode (?review) ──────────────────────────────── */
 .review-mode [data-placeholder] {
-  outline: 1px dashed #ff8a5c;
+  outline: 1px dashed #d4571f;
   outline-offset: 4px;
 }
 
 .review-mode [data-placeholder]::before {
   content: 'placeholder';
-  font: 500 10px/1 var(--mono);
+  font: 600 10px/1 var(--sans);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  background: #ff8a5c;
-  color: #1a0d05;
+  background: #d4571f;
+  color: #fff;
   padding: 3px 5px;
   margin-right: 6px;
   vertical-align: middle;

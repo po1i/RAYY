@@ -1,9 +1,6 @@
 ---
 import '../styles/global.css';
-import serifUrl from '@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2?url';
-import serifItalicUrl from '@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2?url';
-import sansUrl from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
-import monoUrl from '@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2?url';
+import sansUrl from '@fontsource-variable/hanken-grotesk/files/hanken-grotesk-latin-wght-normal.woff2?url';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import ActionBar from '../components/ActionBar.astro';
@@ -63,7 +60,7 @@ const clinic = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <meta name="theme-color" content="#0e0d0b" />
+    <meta name="theme-color" content="#eee9e1" />
     <meta name="format-detection" content="telephone=no" />
     <link rel="icon" href={href('/favicon.svg')} type="image/svg+xml" />
 
@@ -75,17 +72,12 @@ const clinic = {
     <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <link rel="preload" href={serifUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={sansUrl} as="font" type="font/woff2" crossorigin />
     <style
       is:inline
       set:html={`
-@font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;font-display:swap;src:url(${serifUrl}) format('woff2')}
-@font-face{font-family:'Instrument Serif';font-style:italic;font-weight:400;font-display:swap;src:url(${serifItalicUrl}) format('woff2')}
-@font-face{font-family:'Geist';font-style:normal;font-weight:100 900;font-display:swap;src:url(${sansUrl}) format('woff2-variations')}
-@font-face{font-family:'Geist Mono';font-style:normal;font-weight:100 900;font-display:swap;src:url(${monoUrl}) format('woff2-variations')}
-@font-face{font-family:'Instrument Serif Fallback';src:local('Times New Roman'),local('Georgia');size-adjust:86%;ascent-override:96%;descent-override:26%}
-@font-face{font-family:'Geist Fallback';src:local('Arial'),local('Helvetica Neue');size-adjust:103%;ascent-override:92%;descent-override:22%}
+@font-face{font-family:'Hanken Grotesk';font-style:normal;font-weight:100 900;font-display:swap;src:url(${sansUrl}) format('woff2-variations')}
+@font-face{font-family:'Hanken Fallback';src:local('Arial'),local('Helvetica Neue');size-adjust:98%;ascent-override:100%;descent-override:26%}
 `}
     />
     <script is:inline>

@@ -72,7 +72,7 @@ const crumbs = {
         </dl>
 
         <div class="tp-hero__actions" data-reveal style="--i:4">
-          <a class="btn btn--lg" href={telHref} data-magnetic>
+          <a class="btn btn--lg" href={telHref}>
             <Icon name="phone" /> Book a free consult
           </a>
           <a class="btn btn--lg btn--ghost" href="#book">Call me back <Icon name="arrow-down" class="arrow" /></a>
@@ -111,7 +111,7 @@ const crumbs = {
     </div>
   </section>
 
-  <section class="section paper tp-steps" aria-labelledby="tp-how">
+  <section class="section alt tp-steps" aria-labelledby="tp-how">
     <div class="wrap">
       <p class="eyebrow">Step by step</p>
       <h2 id="tp-how" class="display tp-steps__title">How your appointment <em>goes.</em></h2>
@@ -187,7 +187,7 @@ const crumbs = {
     display: flex;
     gap: var(--s-3);
     font-size: var(--t-xs);
-    color: var(--taupe);
+    color: var(--text-3);
   }
 
   .tp-hero__title {
@@ -209,12 +209,12 @@ const crumbs = {
 
   .tp-spec dt {
     font-size: var(--t-xs);
-    color: var(--taupe);
+    color: var(--text-3);
     margin-bottom: var(--s-1);
   }
 
   .tp-spec div:first-child dd {
-    color: var(--brass);
+    color: var(--accent);
   }
 
   .tp-hero__actions {
@@ -236,7 +236,9 @@ const crumbs = {
 
   .tp-intro {
     margin-top: var(--s-5);
-    font-family: var(--serif);
+    font-family: var(--display);
+    font-weight: 300;
+    letter-spacing: -0.03em;
     font-size: var(--t-xl);
     line-height: 1.25;
   }
@@ -251,7 +253,6 @@ const crumbs = {
     align-self: start;
     padding: var(--s-6);
     border: 1px solid var(--line);
-    border-radius: 4px;
   }
 
   .tp-good {
@@ -270,7 +271,7 @@ const crumbs = {
     width: 1rem;
     height: 1rem;
     flex: none;
-    color: var(--brass);
+    color: var(--accent);
     transform: translateY(0.15em);
   }
 
@@ -279,7 +280,7 @@ const crumbs = {
     padding-top: var(--s-4);
     border-top: 1px solid var(--line);
     font-size: var(--t-xs);
-    color: var(--taupe);
+    color: var(--text-3);
   }
 
   .tp-steps__title {
@@ -294,22 +295,24 @@ const crumbs = {
 
   .tp-steps__list li {
     padding-top: var(--s-5);
-    border-top: 1px solid var(--paper-line);
+    border-top: 1px solid var(--line);
   }
 
   .tp-steps__list .mono {
-    color: var(--paper-accent);
+    color: var(--accent);
     font-size: var(--t-xs);
   }
 
   .tp-steps__list h3 {
     margin-block: var(--s-4) var(--s-3);
-    font-family: var(--serif);
+    font-family: var(--display);
+    font-weight: 300;
+    letter-spacing: -0.03em;
     font-size: var(--t-xl);
   }
 
   .tp-steps__list p {
-    color: var(--paper-muted);
+    color: var(--text-2);
     font-size: var(--t-sm);
   }
 
@@ -329,12 +332,14 @@ const crumbs = {
   }
 
   .tp-related__name {
-    font-family: var(--serif);
+    font-family: var(--display);
+    font-weight: 300;
+    letter-spacing: -0.03em;
     font-size: var(--t-xl);
   }
 
   .tp-related__price {
-    color: var(--brass);
+    color: var(--accent);
   }
 
   .tp-related__list :global(.tp-related__arrow) {

@@ -9,7 +9,7 @@ const stats = [
 ];
 ---
 
-<section class="section paper res" id="results" aria-labelledby="res-title">
+<section class="section alt res" id="results" aria-labelledby="res-title">
   <div class="wrap res__grid">
     <div class="res__copy">
       <p class="eyebrow">Results</p>
@@ -128,7 +128,7 @@ const stats = [
 
   .res__stats {
     margin-block: var(--s-7) var(--s-6);
-    border-top: 1px solid var(--paper-line);
+    border-top: 1px solid var(--line);
   }
 
   .res__stats div {
@@ -136,16 +136,16 @@ const stats = [
     grid-template-columns: 8rem 1fr;
     gap: var(--s-4);
     padding-block: var(--s-4);
-    border-bottom: 1px solid var(--paper-line);
+    border-bottom: 1px solid var(--line);
     font-size: var(--t-sm);
   }
 
   .res__stats dt {
-    color: var(--paper-accent);
+    color: var(--accent);
   }
 
   .res__stats dd {
-    color: var(--paper-muted);
+    color: var(--text-2);
   }
 
   .res__ig {
@@ -160,7 +160,7 @@ const stats = [
   .res__fig figcaption {
     margin-top: var(--s-3);
     font-size: var(--t-xs);
-    color: var(--paper-muted);
+    color: var(--text-2);
   }
 
   /* ── Compare: every moving part is a transform ── */
@@ -230,9 +230,9 @@ const stats = [
     margin: -1.625rem 0 0 -1.625rem;
     display: grid;
     place-items: center;
-    border-radius: 50%;
-    background: var(--paper);
-    color: var(--paper-ink);
+    border-radius: 0;
+    background: var(--bg);
+    color: var(--text);
     box-shadow: 0 6px 24px rgb(0 0 0 / 0.35);
     pointer-events: auto;
     cursor: grab;
@@ -250,7 +250,7 @@ const stats = [
   }
 
   .cmp__knob:focus-visible {
-    outline: 2px solid var(--paper);
+    outline: 2px solid var(--bg);
     outline-offset: 4px;
   }
 
@@ -258,7 +258,6 @@ const stats = [
     position: absolute;
     top: var(--s-4);
     padding: 4px 8px;
-    border-radius: 2px;
     font-size: var(--t-xs);
     letter-spacing: 0.08em;
     text-transform: uppercase;

@@ -3,7 +3,11 @@
 Redesign of [revealayouthfulyou.com](https://revealayouthfulyou.com) for a nurse-practitioner-led med spa in Roslindale, Boston.
 The goal is to get visitors to call, text or request a call back, with as little effort as possible.
 
-**Stack:** Astro 5 (static), plain TypeScript, self-hosted fonts, Lenis smooth scroll (desktop only). About 6 KB of JS gzipped on first load.
+**Stack:** Astro 5 (static), plain TypeScript, self-hosted Hanken Grotesk, Lenis smooth scroll (desktop only). About 7 KB of JS gzipped on first load.
+
+**Look ("Limestone"):** a light, warm stone background with graphite text and one deep-olive accent. A single typeface does all the work: light weights at large sizes for headlines, regular weight for body text, and tabular figures for prices and times. Buttons and fields have square edges. Plaster (`.alt`) and graphite (`.dark`) sections set the pacing by redefining the colour tokens, so components never hard-code a theme.
+
+**Signature moment:** the hero image starts as a framed print beside the headline and opens to full-bleed as you scroll (`src/scripts/hero.ts`). It uses transforms only: the frame scales up and the image inside scales down by the same amount, so the picture is never stretched. This only runs on desktop when motion is allowed. On phones, or with reduced motion, it is a still image.
 **Hosting:** GitHub Pages via `.github/workflows/deploy.yml`.
 
 ```bash
@@ -19,7 +23,7 @@ npm run check    # type check
 | --- | --- |
 | Phone, hours, address, links, form endpoint | `src/data/business.ts` |
 | Treatments, prices, FAQs, team, reviews, visit steps | `src/data/site.ts` |
-| Colours, type scale, spacing, motion | `src/styles/global.css` (`:root` tokens) |
+| Colours, type scale, spacing, motion | `src/styles/global.css` (`:root`, `.alt`, `.dark` tokens) |
 | Home page sections | `src/components/*.astro`, assembled in `src/pages/index.astro` |
 | Treatment pages (one per item in `treatments`) | `src/pages/[slug].astro` |
 

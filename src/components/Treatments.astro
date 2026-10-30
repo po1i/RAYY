@@ -159,8 +159,7 @@ const grouped = groups.map((g) => ({ group: g, items: treatments.filter((t) => t
     gap: var(--s-6) var(--s-7);
     padding: var(--s-6);
     border: 1px solid var(--line);
-    border-radius: 4px;
-    background: linear-gradient(180deg, var(--ink-2), var(--ink));
+    background: var(--surface);
     margin-bottom: var(--s-8);
   }
 
@@ -175,7 +174,7 @@ const grouped = groups.map((g) => ({ group: g, items: treatments.filter((t) => t
     margin-bottom: var(--s-4);
     font-size: var(--t-xs);
     letter-spacing: 0.06em;
-    color: var(--taupe);
+    color: var(--text-3);
     text-transform: uppercase;
   }
 
@@ -193,7 +192,6 @@ const grouped = groups.map((g) => ({ group: g, items: treatments.filter((t) => t
     gap: 2px var(--s-3);
     padding: var(--s-3) var(--s-4);
     min-height: 3.5rem;
-    border-radius: 4px;
     box-shadow: inset 0 0 0 1px var(--line);
     text-align: left;
     transition:
@@ -212,8 +210,8 @@ const grouped = groups.map((g) => ({ group: g, items: treatments.filter((t) => t
   }
 
   .chip[aria-pressed='true'] {
-    background: rgb(201 171 126 / 0.1);
-    box-shadow: inset 0 0 0 1px var(--brass);
+    background: var(--tint);
+    box-shadow: inset 0 0 0 1px var(--accent);
   }
 
   .chip__tick {
@@ -222,7 +220,7 @@ const grouped = groups.map((g) => ({ group: g, items: treatments.filter((t) => t
     place-items: center;
     width: 1.25rem;
     height: 1.25rem;
-    border-radius: 50%;
+    border-radius: 0;
     box-shadow: inset 0 0 0 1px var(--line-strong);
     transition:
       background-color var(--dur-1) var(--ease-out),
@@ -232,14 +230,14 @@ const grouped = groups.map((g) => ({ group: g, items: treatments.filter((t) => t
   .chip__tick :global(svg) {
     width: 0.8rem;
     height: 0.8rem;
-    color: var(--brass-ink);
+    color: var(--on-accent);
     stroke-width: 2.25;
     transform: scale(0);
     transition: transform var(--dur-2) var(--ease-out);
   }
 
   .chip[aria-pressed='true'] .chip__tick {
-    background: var(--brass);
+    background: var(--accent);
     box-shadow: none;
   }
 
@@ -254,7 +252,7 @@ const grouped = groups.map((g) => ({ group: g, items: treatments.filter((t) => t
 
   .chip__hint {
     font-size: var(--t-xs);
-    color: var(--taupe);
+    color: var(--text-3);
     line-height: 1.35;
   }
 
@@ -281,7 +279,6 @@ const grouped = groups.map((g) => ({ group: g, items: treatments.filter((t) => t
     gap: var(--s-3);
     min-height: 2.75rem;
     padding-inline: var(--s-4);
-    border-radius: 4px;
     font-size: var(--t-sm);
     box-shadow: inset 0 0 0 1px var(--line);
     transition:
@@ -305,17 +302,17 @@ const grouped = groups.map((g) => ({ group: g, items: treatments.filter((t) => t
   }
 
   .seg__opt input:checked + span {
-    background: rgb(201 171 126 / 0.1);
-    box-shadow: inset 0 0 0 1px var(--brass);
+    background: var(--tint);
+    box-shadow: inset 0 0 0 1px var(--accent);
   }
 
   .seg__opt input:checked + span::before {
-    background: var(--brass);
+    background: var(--accent);
     box-shadow: none;
   }
 
   .seg__opt input:focus-visible + span {
-    outline: 2px solid var(--brass-hi);
+    outline: 2px solid var(--accent-2);
     outline-offset: 3px;
   }
 
@@ -332,7 +329,7 @@ const grouped = groups.map((g) => ({ group: g, items: treatments.filter((t) => t
   }
 
   .finder__result :global(a.jump) {
-    color: var(--brass);
+    color: var(--accent);
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 3px;
@@ -350,7 +347,7 @@ const grouped = groups.map((g) => ({ group: g, items: treatments.filter((t) => t
 
   .finder__result-actions .link {
     font-size: var(--t-xs);
-    color: var(--bone-2);
+    color: var(--text-2);
   }
 
   /* ── List ── */
@@ -383,7 +380,7 @@ const grouped = groups.map((g) => ({ group: g, items: treatments.filter((t) => t
     content: '';
     position: absolute;
     inset: 0 calc(var(--gutter) * -0.5);
-    background: rgb(236 229 216 / 0.035);
+    background: var(--tint);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform var(--dur-3) var(--ease-out);
@@ -396,7 +393,7 @@ const grouped = groups.map((g) => ({ group: g, items: treatments.filter((t) => t
   }
 
   .row__n {
-    color: var(--taupe);
+    color: var(--text-3);
     font-size: var(--t-xs);
   }
 
@@ -404,7 +401,9 @@ const grouped = groups.map((g) => ({ group: g, items: treatments.filter((t) => t
     display: flex;
     align-items: center;
     gap: var(--s-3);
-    font-family: var(--serif);
+    font-family: var(--display);
+    font-weight: 300;
+    letter-spacing: -0.03em;
     font-size: var(--t-xl);
     line-height: 1.1;
   }
@@ -421,7 +420,7 @@ const grouped = groups.map((g) => ({ group: g, items: treatments.filter((t) => t
   }
 
   .row:has(.row__link:focus-visible) {
-    outline: 2px solid var(--brass-hi);
+    outline: 2px solid var(--accent-2);
     outline-offset: 2px;
   }
 
@@ -431,9 +430,8 @@ const grouped = groups.map((g) => ({ group: g, items: treatments.filter((t) => t
     letter-spacing: 0.1em;
     text-transform: uppercase;
     padding: 3px 6px;
-    border-radius: 2px;
-    background: var(--brass);
-    color: var(--brass-ink);
+    background: var(--accent);
+    color: var(--on-accent);
     opacity: 0;
     transform: translateY(4px);
     transition:
@@ -444,7 +442,7 @@ const grouped = groups.map((g) => ({ group: g, items: treatments.filter((t) => t
   .row__short {
     margin-top: var(--s-1);
     font-size: var(--t-sm);
-    color: var(--bone-2);
+    color: var(--text-2);
   }
 
   .row__spec {
@@ -455,19 +453,19 @@ const grouped = groups.map((g) => ({ group: g, items: treatments.filter((t) => t
   }
 
   .row__spec dt {
-    color: var(--taupe);
+    color: var(--text-3);
     margin-bottom: 2px;
   }
 
   .row__price {
     text-align: right;
     font-size: var(--t-sm);
-    color: var(--brass);
+    color: var(--accent);
   }
 
   .row__go {
     justify-self: end;
-    color: var(--taupe);
+    color: var(--text-3);
     transition:
       transform var(--dur-2) var(--ease-out),
       color var(--dur-2) var(--ease-out);
@@ -480,7 +478,7 @@ const grouped = groups.map((g) => ({ group: g, items: treatments.filter((t) => t
 
   .row:hover .row__go {
     transform: translateX(4px);
-    color: var(--bone);
+    color: var(--text);
   }
 
   /* Filter states */

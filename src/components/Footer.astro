@@ -5,11 +5,11 @@ import { href, telHref, hoursRows, address } from '../data/helpers';
 const year = new Date().getFullYear();
 ---
 
-<footer class="ftr">
+<footer class="ftr dark">
   <div class="wrap">
     <div class="ftr__sign">
       <p class="display">Look like yourself, <em>rested.</em></p>
-      <a class="btn btn--lg" href={telHref} data-magnetic>
+      <a class="btn btn--lg" href={telHref}>
         <Icon name="phone" /> Call {business.phone}
       </a>
     </div>
@@ -80,9 +80,11 @@ const year = new Date().getFullYear();
 
 <style>
   .ftr {
-    padding-block: var(--section) var(--s-7);
+    padding-block: var(--section) calc(var(--s-7) + var(--bar-h));
+    /* Run the footer colour behind the mobile action bar. */
+    margin-bottom: calc(var(--bar-h) * -1);
     border-top: 1px solid var(--line);
-    background: var(--ink);
+    background: var(--bg);
   }
 
   .ftr__sign {
@@ -106,7 +108,7 @@ const year = new Date().getFullYear();
     padding-block: var(--s-7);
     border-top: 1px solid var(--line);
     font-size: var(--t-sm);
-    color: var(--bone-2);
+    color: var(--text-2);
   }
 
   .ftr__grid h2 {
@@ -116,7 +118,7 @@ const year = new Date().getFullYear();
   .ftr__grid address {
     font-style: normal;
     margin-bottom: var(--s-3);
-    color: var(--bone);
+    color: var(--text);
   }
 
   .ftr__grid ul {
@@ -132,7 +134,7 @@ const year = new Date().getFullYear();
   }
 
   .ftr__hours dt {
-    color: var(--bone);
+    color: var(--text);
   }
 
   .ftr__base {
@@ -143,7 +145,7 @@ const year = new Date().getFullYear();
     padding-top: var(--s-6);
     border-top: 1px solid var(--line);
     font-size: var(--t-xs);
-    color: var(--taupe);
+    color: var(--text-3);
   }
 
   .ftr__base p:last-child {

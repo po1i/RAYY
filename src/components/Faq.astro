@@ -93,7 +93,7 @@ const schema = {
   }
 
   summary:hover {
-    color: var(--brass-hi);
+    color: var(--accent-2);
   }
 
   .qa__icon {
@@ -102,7 +102,7 @@ const schema = {
     place-items: center;
     width: 2.25rem;
     height: 2.25rem;
-    border-radius: 50%;
+    border-radius: 0;
     box-shadow: inset 0 0 0 1px var(--line-strong);
     transition:
       transform var(--dur-2) var(--ease-out),
@@ -116,15 +116,15 @@ const schema = {
 
   .qa[open] .qa__icon {
     transform: rotate(45deg);
-    background: var(--brass);
-    color: var(--brass-ink);
+    background: var(--accent);
+    color: var(--on-accent);
     box-shadow: none;
   }
 
   .qa__a {
     padding-bottom: var(--s-6);
     max-width: 58ch;
-    color: var(--bone-2);
+    color: var(--text-2);
   }
 
   .qa[open] .qa__a {

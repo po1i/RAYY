@@ -5,63 +5,72 @@ import { business } from '../data/site';
 import { telHref, hoursSummary } from '../data/helpers';
 ---
 
-<section class="hero" aria-labelledby="hero-title">
-  <div class="wrap hero__grid">
-    <div class="hero__copy">
-      <p class="eyebrow hero__eyebrow">Medical aesthetics · Roslindale, Boston</p>
+<section class="hero" aria-labelledby="hero-title" data-hero>
+  <div class="hero__stage">
+    <div class="wrap hero__grid">
+      <div class="hero__copy" data-hero-fade>
+        <p class="eyebrow">Medical aesthetics · Roslindale, Boston</p>
 
-      <h1 id="hero-title" class="display hero__title lines" data-reveal>
-        <span class="line"><span>Look like</span></span>
-        <span class="line"><span>yourself,</span></span>
-        <span class="line"><span><em>rested.</em></span></span>
-      </h1>
+        <h1 id="hero-title" class="display hero__title lines" data-reveal>
+          <span class="line"><span>Look like yourself,</span></span>
+          <span class="line"><span><em>rested.</em></span></span>
+        </h1>
 
-      <p class="lede hero__lede" data-reveal style="--i:3">
-        Botox, fillers, skin and wellness treatments led by a nurse practitioner with 20 years in medicine. Natural
-        results, prices up front, and a free consult before anything happens.
-      </p>
+        <p class="lede hero__lede" data-reveal style="--i:2">
+          Botox, fillers, skin and wellness treatments led by a nurse practitioner with 20 years in medicine. Natural
+          results, prices up front, and a free consult before anything happens.
+        </p>
 
-      <div class="hero__actions" data-reveal style="--i:4">
-        <a class="btn btn--lg" href={telHref} data-magnetic>
-          <Icon name="phone" />
-          <span>Book a free consult</span>
-          <span class="hero__num mono">{business.phone}</span>
-        </a>
-        <a class="btn btn--lg btn--ghost" href="#treatments">
-          Find your treatment <Icon name="arrow-down" class="arrow" />
-        </a>
+        <div class="hero__actions" data-reveal style="--i:3">
+          <a class="btn btn--lg" href={telHref}>
+            <Icon name="phone" />
+            <span>Book a free consult</span>
+          </a>
+          <a class="btn btn--lg btn--ghost" href="#treatments">
+            Find your treatment <Icon name="arrow-down" class="arrow" />
+          </a>
+        </div>
+
+        <p class="hero__status" data-hours-status data-reveal style="--i:4">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span data-hours-text>{hoursSummary()}</span>
+          <span class="hero__num">· {business.phone}</span>
+        </p>
       </div>
 
-      <p class="hero__status mono" data-hours-status data-reveal style="--i:5">
-        <span class="status-dot" aria-hidden="true"></span>
-        <span data-hours-text>{hoursSummary()}</span>
-      </p>
+      <!-- The print: a window onto a full-bleed image. Scroll opens the window. -->
+      <div class="hero__print" data-hero-print>
+        <div class="hero__inner" data-hero-inner>
+          <Art variant="warm" ratio="auto" class="hero__art" eager sizes="100vw" />
+          <p class="hero__cap" data-hero-cap aria-hidden="true">No filters. No frozen faces.</p>
+        </div>
+      </div>
     </div>
 
-    <div class="hero__media">
-      <Art variant="warm" ratio="4 / 5" class="hero__art" eager sizes="(min-width: 60rem) 40vw, 100vw" />
-      <p class="hero__cap mono" aria-hidden="true"><span>Fig. 01</span><span>No filters. No frozen faces.</span></p>
-    </div>
+    <ul class="wrap hero__trust" role="list" data-hero-fade>
+      <li>
+        <span class="stars" aria-hidden="true">
+          <Icon name="star" /><Icon name="star" /><Icon name="star" /><Icon name="star" /><Icon name="star" />
+        </span>
+        <span><strong>{business.rating}</strong> from {business.reviewCount} client reviews</span>
+      </li>
+      <li><span><strong>Nurse practitioner</strong> led, ICU-trained</span></li>
+      <li><span><strong>CareCredit</strong> financing accepted</span></li>
+    </ul>
   </div>
-
-  <ul class="wrap hero__trust" role="list" data-reveal style="--i:6">
-    <li>
-      <span class="stars" aria-hidden="true">
-        <Icon name="star" /><Icon name="star" /><Icon name="star" /><Icon name="star" /><Icon name="star" />
-      </span>
-      <span><strong>{business.rating}</strong> from {business.reviewCount} client reviews</span>
-    </li>
-    <li><span><strong>Nurse practitioner</strong> led, ICU-trained</span></li>
-    <li><span><strong>CareCredit</strong> financing accepted</span></li>
-  </ul>
 </section>
 
 <style>
   .hero {
+    --travel: 80svh;
     position: relative;
-    min-height: 100svh;
+  }
+
+  .hero__stage {
+    position: relative;
     display: grid;
     grid-template-rows: 1fr auto;
+    min-height: 100svh;
     padding-top: calc(var(--header-h) + var(--s-6));
     overflow: clip;
   }
@@ -76,13 +85,14 @@ import { telHref, hoursSummary } from '../data/helpers';
   .hero__copy {
     grid-column: 1 / span 7;
     position: relative;
-    z-index: 1;
+    z-index: 2;
   }
 
   .hero__title {
     font-size: var(--t-3xl);
-    margin-block: var(--s-5) var(--s-6);
-    letter-spacing: -0.025em;
+    margin-block: var(--s-6);
+    letter-spacing: -0.055em;
+    line-height: 0.9;
   }
 
   .hero__lede {
@@ -93,50 +103,90 @@ import { telHref, hoursSummary } from '../data/helpers';
     display: flex;
     flex-wrap: wrap;
     gap: var(--s-3);
-    margin-top: var(--s-6);
-  }
-
-  .hero__num {
-    padding-left: var(--s-3);
-    margin-left: var(--s-1);
-    border-left: 1px solid rgb(23 18 10 / 0.25);
-    font-size: var(--t-xs);
-    opacity: 0.8;
+    margin-top: var(--s-7);
   }
 
   .hero__status {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--s-2);
     margin-top: var(--s-5);
-    font-size: var(--t-xs);
-    color: var(--bone-2);
+    font-size: var(--t-sm);
+    color: var(--text-2);
+    font-variant-numeric: tabular-nums;
   }
 
-  .hero__media {
-    grid-column: 8 / -1;
+  .hero__num {
+    color: var(--text-3);
+  }
+
+  /* ── The print ── */
+  .hero__print {
+    grid-column: 9 / -1;
+    justify-self: end;
     position: relative;
-  }
-
-  .hero__art {
+    z-index: 1;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    transform-origin: 0 0;
     box-shadow: 0 0 0 1px var(--line);
   }
 
+  /* The image is always viewport-sized and centred on the window, so as the
+     window grows it reveals more of the same picture instead of zooming it. */
+  .hero__inner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100vw;
+    height: 100svh;
+    transform: translate(-50%, -50%);
+  }
+
+  .hero__inner :global(.hero__art) {
+    width: 100%;
+    height: 100%;
+  }
+
   .hero__cap {
-    display: flex;
-    justify-content: space-between;
-    margin-top: var(--s-3);
-    font-size: var(--t-xs);
-    color: var(--taupe);
+    position: absolute;
+    left: var(--gutter);
+    bottom: var(--s-7);
+    font-size: var(--t-lg);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: #fbf8f3;
+    text-shadow: 0 1px 12px rgb(29 29 27 / 0.3);
+    opacity: 0;
+  }
+
+  /* A plaster veil lifts off the print on load. */
+  .hero__print::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--bg);
+    transform-origin: top;
+    animation: veil 1.4s var(--ease-in-out) 0.2s both;
+  }
+
+  @keyframes veil {
+    to {
+      transform: scaleY(0);
+    }
   }
 
   .hero__trust {
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-wrap: wrap;
     gap: var(--s-3) var(--s-7);
     padding-block: var(--s-7) var(--s-6);
     font-size: var(--t-sm);
-    color: var(--bone-2);
+    color: var(--text-2);
   }
 
   .hero__trust li {
@@ -146,14 +196,14 @@ import { telHref, hoursSummary } from '../data/helpers';
   }
 
   .hero__trust strong {
-    color: var(--bone);
-    font-weight: 500;
+    color: var(--text);
+    font-weight: 600;
   }
 
   .stars {
     display: inline-flex;
     gap: 1px;
-    color: var(--brass);
+    color: var(--accent);
   }
 
   .stars :global(svg) {
@@ -161,74 +211,43 @@ import { telHref, hoursSummary } from '../data/helpers';
     height: 0.875rem;
   }
 
-  /* ── The reveal: a veil lifts off the image on load ── */
-  .hero__media::after {
-    content: '';
-    position: absolute;
-    inset: 0 0 calc(var(--s-3) + 1.2em);
-    background: var(--ink);
-    transform-origin: top;
-    animation: veil 1.6s var(--ease-in-out) 0.25s both;
-  }
-
-  @keyframes veil {
-    to {
-      transform: scaleY(0);
+  /* ── Pinned mode: desktop, tall enough, motion allowed ── */
+  @media (min-width: 60rem) and (min-height: 40rem) and (prefers-reduced-motion: no-preference) {
+    :global(.js) .hero {
+      height: calc(100svh + var(--travel));
     }
-  }
 
-  /* ── Scroll-linked: light rakes across, image drifts (where supported) ── */
-  @supports (animation-timeline: scroll()) {
-    @media (prefers-reduced-motion: no-preference) {
-      .hero__art :global(.art__light) {
-        animation: rake linear both;
-        animation-timeline: scroll(root);
-        animation-range: 0 90vh;
-      }
-
-      .hero__art {
-        animation: drift linear both;
-        animation-timeline: scroll(root);
-        animation-range: 0 100vh;
-      }
+    :global(.js) .hero__stage {
+      position: sticky;
+      top: 0;
+      height: 100svh;
     }
-  }
 
-  @keyframes rake {
-    from {
-      transform: translate3d(-35%, 0, 0);
+    :global(.js) .hero__print {
+      width: auto;
+      height: min(64svh, 46rem);
+      will-change: transform;
     }
-    to {
-      transform: translate3d(40%, 0, 0);
-    }
-  }
 
-  @keyframes drift {
-    to {
-      transform: translate3d(0, 12%, 0) scale(0.96);
+    :global(.js) .hero__inner {
+      will-change: transform;
     }
   }
 
   @media (max-width: 59.99rem) {
-    .hero {
-      padding-top: calc(var(--header-h) + var(--s-6));
-    }
-
     .hero__grid {
       grid-template-columns: 1fr;
       gap: var(--s-7);
     }
 
     .hero__copy,
-    .hero__media {
+    .hero__print {
       grid-column: 1 / -1;
     }
 
-    .hero__media {
+    .hero__print {
+      justify-self: start;
       max-width: 34rem;
-    }
-
-    .hero__art {
       aspect-ratio: 5 / 4;
     }
 
@@ -242,16 +261,16 @@ import { telHref, hoursSummary } from '../data/helpers';
     .hero__actions .btn {
       width: 100%;
     }
-
-    .hero__num {
-      display: none;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero__media::after {
-      animation: none;
+    .hero__print::after {
       display: none;
     }
   }
 </style>
+
+<script>
+  import { initHero } from '../scripts/hero';
+  initHero();
+</script>
